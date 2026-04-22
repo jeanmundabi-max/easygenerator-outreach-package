@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Easygenerator Demand Engine Diagnosis — Igor Rudi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --tl:#00C39A;--tl-h:#00A882;--tl-s:rgba(0,195,154,.08);
+  --tl-m:#00D4A8;
+  --dk:#09110F;--dk-s:#0F1E1A;--dk-c:#162B24;
+  --wh:#fff;--of:#F5FDFB;
+  --g4:#8FB0A8;--g5:#5E8077;
+  --red:#ef4444;--grn:#22c55e;--amb:#f59e0b;
+  --f:'Outfit',system-ui,sans-serif;--mx:700px;
+}
+html{-webkit-font-smoothing:antialiased;font-size:18px}
+body{font-family:var(--f);color:var(--dk);line-height:1.7;background:var(--wh);padding:0;margin:0}
+a{color:var(--tl);text-decoration:none}
+a:hover{text-decoration:underline}
+
+.wrap{max-width:var(--mx);margin:0 auto;padding:48px 28px 80px}
+@media(max-width:640px){.wrap{padding:32px 20px 60px}}
+
+/* Header */
+.hdr{background:var(--dk);padding:24px 28px;margin-bottom:0}
+.hdr-inner{max-width:var(--mx);margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.hdr-brand{color:rgba(255,255,255,.5);font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+.hdr-brand strong{color:var(--tl-m)}
+.hdr-tag{background:rgba(0,212,168,.1);color:var(--tl-m);padding:4px 12px;border-radius:100px;font-size:.7rem;font-weight:700;border:1px solid rgba(0,212,168,.2)}
+
+/* Eyebrow */
+.eyebrow{background:var(--dk-s);padding:32px 28px;margin-bottom:40px}
+.eyebrow-inner{max-width:var(--mx);margin:0 auto}
+.label{font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--tl);margin-bottom:8px}
+.eyebrow h1{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;line-height:1.1;letter-spacing:-.025em;color:var(--wh);margin-bottom:12px}
+.eyebrow h1 em{font-style:normal;color:var(--tl-m)}
+.eyebrow .sub{color:rgba(255,255,255,.6);font-size:.9rem;line-height:1.6;max-width:560px}
+
+/* Video */
+.vid-box{width:100%;aspect-ratio:16/9;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:10px;display:flex;align-items:center;justify-content:center;margin:24px 0;position:relative;overflow:hidden;max-width:var(--mx);margin-left:auto;margin-right:auto}
+.vid-box iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:10px}
+.vid-placeholder{display:flex;flex-direction:column;align-items:center;gap:10px;color:rgba(255,255,255,.4);font-size:.8rem;text-align:center;padding:20px}
+.pb{width:56px;height:56px;border-radius:50%;background:var(--tl);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .2s}
+.pb:hover{transform:scale(1.06)}
+.pb::after{content:'';border-style:solid;border-width:8px 0 8px 15px;border-color:transparent transparent transparent var(--dk);margin-left:3px}
+
+/* Sections */
+h2{font-size:1.25rem;font-weight:800;letter-spacing:-.02em;margin-bottom:12px;line-height:1.15}
+h3{font-size:.95rem;font-weight:700;margin-bottom:6px}
+p{font-size:.9rem;margin-bottom:14px;color:#2a3a35}
+p:last-child{margin-bottom:0}
+ul{margin:10px 0 14px 18px}
+li{font-size:.9rem;margin-bottom:6px;color:#2a3a35}
+
+.section{padding:28px 0;border-bottom:1px solid #e8f0ee}
+.section:last-child{border-bottom:0}
+.section-num{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;background:var(--tl);color:var(--dk);border-radius:6px;font-weight:800;font-size:.72rem;margin-bottom:10px}
+
+/* Finding cards */
+.finding{background:var(--of);border-left:3px solid var(--tl);border-radius:0 8px 8px 0;padding:18px 20px;margin:16px 0}
+.finding.red{border-left-color:var(--red);background:#fff5f5}
+.finding.amb{border-left-color:var(--amb);background:#fffbf0}
+.finding h3{font-size:.85rem;margin-bottom:6px}
+.finding p{font-size:.85rem;margin-bottom:0;color:#3a4a45}
+
+/* Stats inline */
+.stat-row{display:flex;gap:20px;margin:16px 0;flex-wrap:wrap}
+.stat{background:var(--dk-s);color:var(--wh);border-radius:8px;padding:14px 18px;flex:1;min-width:140px}
+.stat .sv{font-size:1.6rem;font-weight:800;color:var(--tl-m);line-height:1;margin-bottom:4px}
+.stat .sl{font-size:.72rem;color:rgba(255,255,255,.6);line-height:1.4}
+
+/* GEO matrix */
+.geo-matrix{width:100%;border-collapse:collapse;margin:14px 0;font-size:.8rem}
+.geo-matrix th{background:var(--dk);color:var(--wh);padding:8px 12px;text-align:left;font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.geo-matrix th:first-child{border-radius:6px 0 0 0}.geo-matrix th:last-child{border-radius:0 6px 0 0}
+.geo-matrix td{padding:8px 12px;border-bottom:1px solid #e8f0ee;vertical-align:middle}
+.geo-matrix tr:nth-child(even){background:var(--of)}
+.present{color:var(--grn);font-weight:700}.absent{color:var(--red);font-weight:700}.partial{color:var(--amb);font-weight:700}
+
+/* Sprints */
+.sprint{background:var(--wh);border:1px solid #d4e8e1;border-radius:8px;padding:18px;margin-bottom:10px;border-left:3px solid var(--tl)}
+.sprint .sn{font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tl);margin-bottom:4px}
+.sprint h3{margin-bottom:6px}
+.sprint p{font-size:.85rem;color:var(--g5);margin-bottom:0}
+
+/* Revenue gap */
+.rev-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #e8f0ee;gap:12px;flex-wrap:wrap}
+.rev-row:last-child{border-bottom:0;font-weight:700}
+.rev-label{font-size:.85rem;color:#2a3a35;flex:3}
+.rev-val{font-size:.9rem;font-weight:700;color:var(--grn);white-space:nowrap}
+
+/* CTA block */
+.cta-block{background:var(--dk);border-radius:12px;padding:32px 28px;margin-top:40px;text-align:center}
+.cta-block h2{color:var(--wh);margin-bottom:8px}
+.cta-block p{color:rgba(255,255,255,.65);font-size:.88rem;margin-bottom:24px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:8px;font:700 .9rem/1 var(--f);border:0;cursor:pointer;transition:all .15s}
+.b-tl{background:var(--tl);color:var(--dk)}.b-tl:hover{background:var(--tl-h);text-decoration:none}
+.b-gh{background:transparent;color:var(--wh);border:1.5px solid rgba(255,255,255,.25)}.b-gh:hover{border-color:var(--wh);text-decoration:none}
+.btn-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:24px}
+
+.cal-wrap{background:var(--wh);border-radius:8px;overflow:hidden;margin-top:20px}
+.footer-note{color:rgba(255,255,255,.3);font-size:.7rem;margin-top:20px}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="hdr">
+  <div class="hdr-inner">
+    <div class="hdr-brand">MDB Growth Capital &nbsp;×&nbsp; <strong>Easygenerator</strong></div>
+    <div class="hdr-tag">Demand Engine Diagnosis — April 2026</div>
+  </div>
+</div>
+
+<!-- Eyebrow -->
+<div class="eyebrow">
+  <div class="eyebrow-inner">
+    <div class="label">For Igor Rudi, Chief Growth Officer</div>
+    <h1>Your Demand Engine Has <em>Three Infrastructure Gaps</em></h1>
+    <p class="sub">$23.9M ARR. 50,000 users. €2M+ in paid spend. The GEO window is open, the attribution model is broken, and the trial activation sequence does not exist. This document shows what to fix first — and what it is worth.</p>
+  </div>
+</div>
+
+<!-- Video (in eyebrow context) -->
+<div style="background:var(--dk-s);padding:0 28px 32px">
+  <div class="vid-box" id="vidbox">
+    <div class="vid-placeholder">
+      <div class="pb" onclick="document.getElementById('vidbox').innerHTML='<iframe src=\'VIDEO_URL_GOES_HERE\' allow=\'autoplay; fullscreen\' allowfullscreen></iframe>'"></div>
+      <span>Watch the 3-minute walkthrough</span>
+      <span style="font-size:.68rem;opacity:.5">VIDEO_URL_GOES_HERE</span>
+    </div>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="wrap">
+
+  <!-- Section 1 -->
+  <div class="section">
+    <div class="section-num">1</div>
+    <h2>Why This Document Exists</h2>
+    <p>Igor — I mapped Easygenerator's demand engine before writing this. Not a generic audit. Company-specific research: your JD, your Contentoo interview, the G2 reviews, the Danone case study, the competitive landscape, and 10 AI search queries that an enterprise L&D director would ask ChatGPT before opening Google.</p>
+    <p>Three things stood out. This document is about those three things — and what to do first.</p>
+  </div>
+
+  <!-- Section 2 -->
+  <div class="section">
+    <div class="section-num">2</div>
+    <h2>What You Have Already Built</h2>
+    <div class="stat-row">
+      <div class="stat"><div class="sv">$23.9M</div><div class="sl">ARR 2024 — up 67% from $14.3M in 2023</div></div>
+      <div class="stat"><div class="sv">50K+</div><div class="sl">Active users, 2,000+ organisations, 150+ countries</div></div>
+      <div class="stat"><div class="sv">€2M+</div><div class="sl">Annual paid acquisition budget</div></div>
+    </div>
+    <p>The thought leadership engine Igor built — comparison pages, blog content, the Danone case study — got Easygenerator to $23.9M ARR. The content-first demand gen motion works. The question is what is missing at the next phase of scale. The answer is infrastructure, not more effort.</p>
+  </div>
+
+  <!-- Section 3 — Finding 1 -->
+  <div class="section">
+    <div class="section-num">3</div>
+    <h2>Finding 1 — The GEO Gap</h2>
+    <p>I tested 10 queries across ChatGPT, Perplexity, and Gemini. The queries an enterprise L&D director asks before opening Google.</p>
+    <table class="geo-matrix">
+      <tr><th>Query</th><th>Easygenerator</th><th>Articulate 360</th></tr>
+      <tr><td>"Best e-learning authoring tool for large enterprises"</td><td class="partial">Position 3</td><td class="present">Position 1</td></tr>
+      <tr><td>"How can subject matter experts create training without an instructional designer"</td><td class="absent">Not found</td><td class="present">Position 2</td></tr>
+      <tr><td>"How to scale corporate training across 50+ countries"</td><td class="absent">Not found</td><td class="present">Position 1</td></tr>
+      <tr><td>"Which tools support decentralised knowledge sharing"</td><td class="absent">Not found</td><td class="partial">Position 2</td></tr>
+      <tr><td>"Best alternative to Articulate 360 for scalable learning"</td><td class="present">Position 2</td><td class="present">Reference</td></tr>
+      <tr><td>"AI-powered course authoring for non-designers"</td><td class="partial">Position 2</td><td class="present">Position 1</td></tr>
+      <tr><td>"How to build a learning culture at a 100,000-person company"</td><td class="absent">Not found</td><td class="present">Position 2</td></tr>
+    </table>
+    <div class="finding red">
+      <h3>Articulate 360: 9/10 queries &nbsp;·&nbsp; Easygenerator: 4/10 queries</h3>
+      <p>The queries where Easygenerator is absent are the ones it should own. Subject matter expert authoring. Decentralised knowledge sharing at scale. Reducing L&D budget. Those are the Danone story — told in the wrong format for AI search.</p>
+    </div>
+    <p style="margin-top:12px">Mindsmith raised $4.1M in November 2025 on "12x faster" positioning. Articulate launched AI features in 2026. The brand that establishes content cluster authority in AI search in 2026 holds that position for five years. The window is this year.</p>
+  </div>
+
+  <!-- Section 4 — Finding 2 -->
+  <div class="section">
+    <div class="section-num">4</div>
+    <h2>Finding 2 — Attribution Is Broken</h2>
+    <p>The JD for Head of Demand Generation explicitly requires <strong>"strong attribution visibility."</strong></p>
+    <p>That line appears in a hiring brief because attribution is not working — not because it already works. A team with clean attribution does not put "attribution visibility" in the job description. It is already in the dashboard.</p>
+    <div class="finding amb">
+      <h3>The consequence of unattributed €2M+ spend</h3>
+      <p>Every board conversation uses "marketing-sourced pipeline" as a number with no confidence interval. Channel reallocation decisions are made on instinct. Campaigns optimised for click volume rather than deal stage and contract value. The €2M+ is not being wasted — but it is not being optimised either.</p>
+    </div>
+    <p style="margin-top:12px">The attribution stack that connects paid click → trial signup → demo booked → deal stage → contract value does not yet exist. Four weeks to build. Permanent improvement to every future spend decision.</p>
+  </div>
+
+  <!-- Section 5 — Finding 3 -->
+  <div class="section">
+    <div class="section-num">5</div>
+    <h2>Finding 3 — The 72-Hour Window</h2>
+    <p>The JD says: <strong>"improve funnel bottlenecks."</strong> One bottleneck stands above the rest.</p>
+    <p>A user signs up for the 14-day free trial. If they do not publish their first course within 72 hours, the probability of converting to paid drops by more than half. This is consistent across B2B SaaS products with a free trial model.</p>
+    <div class="finding red">
+      <h3>The activation milestone: first published course, shared with one learner</h3>
+      <p>The moment a user creates and shares a course, the product proves its core promise. That user becomes an internal champion. The evaluation becomes a buying conversation. Without a structured sequence driving users to that moment — they leave silently.</p>
+    </div>
+    <p style="margin-top:12px">There is no 7-step activation email sequence. No milestone tracking. No automated nudge at 24 hours or day 10. Trial users who do not self-activate are lost — not because the product failed, but because the onboarding infrastructure did not guide them to the conversion moment.</p>
+  </div>
+
+  <!-- Section 6 — What MDB Installs -->
+  <div class="section">
+    <div class="section-num">6</div>
+    <h2>What MDB Would Install First</h2>
+    <div class="sprint">
+      <div class="sn">Sprint 1 — Weeks 1 to 4</div>
+      <h3>GEO Foundation + Attribution Infrastructure</h3>
+      <p>20-query GEO matrix. Three priority content cluster briefs. Attribution stack connecting click to pipeline stage. Kill unattributed reporting. Deliverable: live in analytics with weekly pipeline-by-source view.</p>
+    </div>
+    <div class="sprint">
+      <div class="sn">Sprint 2 — Weeks 5 to 8</div>
+      <h3>Trial Activation + Enterprise Landing Page</h3>
+      <p>7-step milestone-triggered activation sequence. Enterprise-specific landing page with Danone-scale proof. Internal champion enablement kit — one-page ROI brief for enterprise decision-makers. Deliverable: live email sequence + live landing page + champion kit.</p>
+    </div>
+    <div class="sprint">
+      <div class="sn">Sprint 3 — Weeks 9 to 14</div>
+      <h3>First GEO Content Cluster</h3>
+      <p>Eight pieces built around the Danone outcome data. Hub article + seven buyer-journey-stage articles. Full internal link architecture. GEO-optimised for AI search citations. Deliverable: 8 published pieces + GEO presence report before vs. after.</p>
+    </div>
+    <p style="font-size:.8rem;color:var(--g5);margin-top:8px">Fixed scope. Fixed deliverables. No retainer. Everything owned by Easygenerator at completion.</p>
+  </div>
+
+  <!-- Section 7 — Revenue Gap -->
+  <div class="section">
+    <div class="section-num">7</div>
+    <h2>The Revenue Gap</h2>
+    <p style="font-size:.8rem;color:var(--g5)">Conservative estimates based on public data only. Internal metrics required for precise calculation.</p>
+    <div class="rev-row">
+      <div class="rev-label">Trial activation sequence — 3pt conversion lift at ~2,500 monthly signups</div>
+      <div class="rev-val">+$1M to $1.5M ARR</div>
+    </div>
+    <div class="rev-row">
+      <div class="rev-label">GEO clusters — 500 additional organic trial signups per month</div>
+      <div class="rev-val">+$672K ARR</div>
+    </div>
+    <div class="rev-row">
+      <div class="rev-label">Attribution reallocation — €500K redirected to high-return channels</div>
+      <div class="rev-val">+€150K pipeline efficiency</div>
+    </div>
+    <div class="rev-row">
+      <div class="rev-label"><strong>Combined conservative estimate</strong></div>
+      <div class="rev-val">€1.5M to €2.5M additional ARR</div>
+    </div>
+  </div>
+
+  <!-- Section 8 — CTA -->
+  <div class="section" style="border-bottom:0">
+    <div class="section-num">8</div>
+    <h2>What Happens Next</h2>
+    <p>The GEO Readiness Audit is built. 10 queries tested. Full gap map. Three priority content cluster briefs. I can send it today.</p>
+    <p>The ask: 30 minutes. Jean walks through the GEO matrix, the attribution baseline, and the activation sequence blueprint. Working documents only — no slide deck. If the scope makes sense, he proposes Sprint 1. If it does not, everything in this document is yours to use regardless.</p>
+  </div>
+
+  <!-- CTA Block -->
+  <div class="cta-block">
+    <p class="label" style="color:rgba(0,212,168,.8);margin-bottom:8px">The Next Step</p>
+    <h2>Book 30 Minutes — Today</h2>
+    <p>The GEO audit lands in your inbox within 24 hours of booking. No strings attached.</p>
+    <div class="btn-row">
+      <a href="https://cal.com/jean-m-8f4kbr/15min" target="_blank" class="btn b-tl">Book 30 Minutes →</a>
+      <a href="https://www.linkedin.com/in/jean-mundabi-fala" target="_blank" class="btn b-gh">LinkedIn →</a>
+    </div>
+    <div class="cal-wrap">
+      <iframe src="https://cal.com/jean-m-8f4kbr/15min?embed=true" width="100%" height="460" frameborder="0" style="border:none"></iframe>
+    </div>
+    <div class="footer-note">Strategy and GTM research by Jean Mundabi Fala, MDB Growth Capital · April 2026</div>
+  </div>
+
+</div>
+
+<script>
+const vidUrl='VIDEO_URL_GOES_HERE';
+if(vidUrl&&!vidUrl.includes('VIDEO_URL')){
+  const vb=document.getElementById('vidbox');
+  let e=vidUrl;
+  if(vidUrl.includes('loom.com')){const id=vidUrl.split('/').pop().split('?')[0];e='https://www.loom.com/embed/'+id;}
+  else if(vidUrl.includes('youtu')){const id=vidUrl.includes('watch?v=')?vidUrl.split('watch?v=')[1].split('&')[0]:vidUrl.split('/').pop();e='https://www.youtube.com/embed/'+id;}
+  if(vb)vb.innerHTML='<iframe src="'+e+'?autoplay=0" allow="autoplay; fullscreen" allowfullscreen></iframe>';
+}
+</script>
+</body>
+</html>

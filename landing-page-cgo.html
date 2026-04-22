@@ -1,0 +1,2182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Easygenerator — Scale Training Without Scaling Your L&D Team</title>
+<!-- NOTE: Brand colors approximate (#00C39A). Verify via Playwright before final send. -->
+<style>
+  :root {
+    --tl:  #00C39A;
+    --tl-d:#009E7C;
+    --tl-l:#E6FAF6;
+    --dk:  #09110F;
+    --dk-s:#0F1E1A;
+    --dk-m:#162920;
+    --lt:  #F4FBF9;
+    --lt-s:#E8F7F3;
+    --mg:  #8AADA5;
+    --txt: #1A2E29;
+    --warn:#E05C3A;
+    --r:   8px;
+    --sans:-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, sans-serif;
+    --mono:'Courier New', monospace;
+    --shadow: 0 4px 32px rgba(0,195,154,0.10);
+  }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    font-size: 18px;
+    line-height: 1.65;
+    color: var(--txt);
+    background: #fff;
+    overflow-x: hidden;
+  }
+
+  /* ── UTILITIES ─────────────────────────────── */
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+  .container-narrow { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+
+  .tl { color: var(--tl); }
+  .bold { font-weight: 700; }
+  .mono { font-family: var(--mono); }
+
+  .eyebrow {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--tl);
+    margin-bottom: 14px;
+  }
+
+  .section { padding: 88px 0; }
+  .section-alt { background: var(--lt); }
+  .section-dark { background: var(--dk); color: #fff; }
+  .section-tl { background: var(--tl); color: var(--dk); }
+
+  .section-title {
+    font-size: clamp(26px, 3.5vw, 38px);
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 16px;
+    color: var(--dk);
+  }
+
+  .section-dark .section-title,
+  .section-tl .section-title { color: inherit; }
+
+  .section-sub {
+    font-size: 18px;
+    color: #4A6660;
+    max-width: 600px;
+    line-height: 1.6;
+    margin-bottom: 48px;
+  }
+
+  .section-dark .section-sub { color: rgba(255,255,255,0.7); }
+
+  /* ── NAV ───────────────────────────────────── */
+  .nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(9,17,15,0.97);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(0,195,154,0.15);
+    padding: 0 24px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-weight: 800;
+    font-size: 18px;
+    color: #fff;
+    text-decoration: none;
+    letter-spacing: -0.3px;
+  }
+
+  .nav-logo span { color: var(--tl); }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: rgba(255,255,255,0.65);
+    text-decoration: none;
+    font-size: 15px;
+    transition: color 0.18s;
+  }
+
+  .nav-links a:hover { color: #fff; }
+
+  .btn-nav {
+    background: var(--tl);
+    color: var(--dk);
+    border: none;
+    padding: 9px 22px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.18s;
+  }
+
+  .btn-nav:hover { background: var(--tl-d); }
+
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+  }
+
+  /* ── STICKY BAR ────────────────────────────── */
+  .sticky-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    z-index: 99;
+    background: var(--dk);
+    border-top: 2px solid var(--tl);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+  }
+
+  .sticky-bar.visible { transform: translateY(0); }
+
+  .sticky-bar-text {
+    color: rgba(255,255,255,0.8);
+    font-size: 15px;
+  }
+
+  .sticky-bar-text strong { color: #fff; }
+
+  .sticky-bar-actions {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 600px) {
+    .sticky-bar { flex-direction: column; gap: 10px; text-align: center; }
+  }
+
+  /* ── BUTTONS ───────────────────────────────── */
+  .btn-primary {
+    display: inline-block;
+    background: var(--tl);
+    color: var(--dk);
+    font-size: 16px;
+    font-weight: 700;
+    padding: 16px 32px;
+    border-radius: var(--r);
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.18s, transform 0.15s;
+    line-height: 1;
+  }
+
+  .btn-primary:hover { background: var(--tl-d); transform: translateY(-1px); }
+
+  .btn-secondary {
+    display: inline-block;
+    background: transparent;
+    color: var(--dk);
+    font-size: 16px;
+    font-weight: 600;
+    padding: 15px 28px;
+    border-radius: var(--r);
+    border: 2px solid var(--dk);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.18s;
+  }
+
+  .btn-secondary:hover { background: var(--dk); color: #fff; }
+
+  .btn-ghost {
+    display: inline-block;
+    background: transparent;
+    color: rgba(255,255,255,0.8);
+    font-size: 15px;
+    font-weight: 600;
+    padding: 9px 20px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.25);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.18s;
+  }
+
+  .btn-ghost:hover { background: rgba(255,255,255,0.08); color: #fff; }
+
+  .btn-small-tl {
+    display: inline-block;
+    background: var(--tl);
+    color: var(--dk);
+    font-size: 14px;
+    font-weight: 700;
+    padding: 10px 22px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.18s;
+  }
+
+  .btn-small-tl:hover { background: var(--tl-d); }
+
+  /* ── HERO ──────────────────────────────────── */
+  .hero {
+    background: var(--dk);
+    color: #fff;
+    padding: 140px 0 96px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -200px; right: -100px;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,195,154,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0,195,154,0.12);
+    border: 1px solid rgba(0,195,154,0.25);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--tl);
+    margin-bottom: 24px;
+  }
+
+  .hero-label::before {
+    content: '';
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--tl);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+  }
+
+  .hero h1 {
+    font-size: clamp(32px, 5vw, 58px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    max-width: 820px;
+    margin-bottom: 22px;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    color: var(--tl);
+    text-decoration: underline;
+    text-decoration-color: rgba(0,195,154,0.4);
+    text-underline-offset: 4px;
+  }
+
+  .hero-sub {
+    font-size: clamp(17px, 2.2vw, 21px);
+    color: rgba(255,255,255,0.65);
+    max-width: 600px;
+    margin-bottom: 40px;
+    line-height: 1.6;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: center;
+    margin-bottom: 56px;
+  }
+
+  .hero-note {
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .hero-note::before { content: '✓'; color: var(--tl); }
+
+  .hero-clients {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    padding-top: 40px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .hero-clients-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    flex-shrink: 0;
+  }
+
+  .client-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.5px;
+  }
+
+  /* ── PROBLEM ───────────────────────────────── */
+  .problem-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-bottom: 56px;
+  }
+
+  .problem-card {
+    background: #fff;
+    border: 1px solid #E0EDEA;
+    border-radius: var(--r);
+    padding: 28px 24px;
+    border-left: 4px solid var(--warn);
+    position: relative;
+  }
+
+  .problem-quote {
+    font-size: 16px;
+    color: var(--txt);
+    line-height: 1.6;
+    font-style: italic;
+    margin-bottom: 14px;
+  }
+
+  .problem-quote::before { content: '"'; color: var(--warn); font-size: 32px; line-height: 0; vertical-align: -10px; margin-right: 4px; }
+
+  .problem-source {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--mg);
+    letter-spacing: 0.5px;
+  }
+
+  /* ── WHO'S CREATING ────────────────────────── */
+  .who-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-bottom: 48px;
+  }
+
+  @media (max-width: 600px) { .who-grid { grid-template-columns: 1fr; } }
+
+  .who-card {
+    border-radius: var(--r);
+    padding: 28px 24px;
+  }
+
+  .who-card.now {
+    background: #FFF4F1;
+    border: 2px solid #F5C4B8;
+  }
+
+  .who-card.after {
+    background: var(--tl-l);
+    border: 2px solid rgba(0,195,154,0.3);
+  }
+
+  .who-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    font-weight: 700;
+  }
+
+  .who-card.now .who-label { color: var(--warn); }
+  .who-card.after .who-label { color: var(--tl-d); }
+
+  .who-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .who-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 16px;
+    color: var(--txt);
+    line-height: 1.5;
+  }
+
+  .who-list li::before { flex-shrink: 0; margin-top: 2px; }
+  .who-card.now .who-list li::before { content: '✕'; color: var(--warn); font-weight: 700; }
+  .who-card.after .who-list li::before { content: '✓'; color: var(--tl-d); font-weight: 700; }
+
+  /* ── STATS BAR ─────────────────────────────── */
+  .stats-bar {
+    background: var(--dk);
+    padding: 40px 0;
+  }
+
+  .stats-grid {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-number {
+    font-size: clamp(30px, 5vw, 44px);
+    font-weight: 800;
+    color: var(--tl);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .stat-label {
+    font-size: 14px;
+    color: rgba(255,255,255,0.55);
+    font-family: var(--mono);
+    letter-spacing: 0.5px;
+  }
+
+  /* ── VSL ───────────────────────────────────── */
+  .vsl-wrap {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .video-placeholder {
+    background: var(--dk-m);
+    border: 2px solid rgba(0,195,154,0.2);
+    border-radius: 12px;
+    aspect-ratio: 16/9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .video-placeholder::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(0,195,154,0.06) 0%, transparent 70%);
+  }
+
+  .play-btn {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    background: var(--tl);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+  }
+
+  .video-placeholder:hover .play-btn { transform: scale(1.08); }
+
+  .play-btn svg { width: 26px; height: 26px; fill: var(--dk); margin-left: 4px; }
+
+  .video-caption {
+    font-size: 16px;
+    color: rgba(255,255,255,0.55);
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: 0.5px;
+  }
+
+  .vsl-note {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 15px;
+    color: var(--mg);
+  }
+
+  /* ── HOW IT WORKS ──────────────────────────── */
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    counter-reset: step;
+  }
+
+  @media (max-width: 700px) { .steps { grid-template-columns: 1fr; } }
+
+  .step {
+    position: relative;
+    padding: 32px 24px;
+    background: #fff;
+    border: 1px solid #E0EDEA;
+    border-radius: var(--r);
+    counter-increment: step;
+  }
+
+  .step::before {
+    content: counter(step, decimal-leading-zero);
+    position: absolute;
+    top: -18px; left: 24px;
+    background: var(--tl);
+    color: var(--dk);
+    font-weight: 800;
+    font-size: 13px;
+    font-family: var(--mono);
+    padding: 4px 10px;
+    border-radius: 4px;
+  }
+
+  .step-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--dk);
+    margin-bottom: 10px;
+    margin-top: 10px;
+  }
+
+  .step-body {
+    font-size: 16px;
+    color: #4A6660;
+    line-height: 1.6;
+  }
+
+  .step-time {
+    display: inline-block;
+    margin-top: 14px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--tl-d);
+    background: var(--tl-l);
+    padding: 4px 10px;
+    border-radius: 4px;
+  }
+
+  /* ── FEATURES ──────────────────────────────── */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+  }
+
+  .feature-card {
+    background: var(--dk-m);
+    border: 1px solid rgba(0,195,154,0.1);
+    border-radius: var(--r);
+    padding: 24px 20px;
+  }
+
+  .feature-icon {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    background: rgba(0,195,154,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    margin-bottom: 14px;
+  }
+
+  .feature-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+
+  .feature-body {
+    font-size: 14px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.55;
+  }
+
+  /* ── CASE STUDY ────────────────────────────── */
+  .case-study-card {
+    background: var(--dk);
+    border: 1px solid rgba(0,195,154,0.2);
+    border-radius: 12px;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+
+  @media (max-width: 700px) { .case-study-card { grid-template-columns: 1fr; } }
+
+  .case-study-left {
+    padding: 48px 40px;
+    background: var(--dk-s);
+    border-right: 1px solid rgba(0,195,154,0.1);
+  }
+
+  .case-study-right {
+    padding: 48px 40px;
+  }
+
+  .case-company {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--tl);
+    margin-bottom: 12px;
+  }
+
+  .case-headline {
+    font-size: clamp(20px, 3vw, 26px);
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.25;
+    margin-bottom: 16px;
+  }
+
+  .case-body {
+    font-size: 16px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.65;
+    margin-bottom: 24px;
+  }
+
+  .case-metrics {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .case-metric {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .case-metric-number {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--tl);
+    line-height: 1;
+  }
+
+  .case-metric-label {
+    font-size: 14px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.4;
+  }
+
+  .case-quote {
+    font-size: 17px;
+    color: rgba(255,255,255,0.8);
+    font-style: italic;
+    line-height: 1.65;
+    border-left: 3px solid var(--tl);
+    padding-left: 20px;
+    margin-bottom: 20px;
+  }
+
+  .case-attrib {
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+    font-family: var(--mono);
+    margin-top: 4px;
+  }
+
+  /* ── VIDEO TESTIMONIALS ────────────────────── */
+  .testi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  @media (max-width: 720px) { .testi-grid { grid-template-columns: 1fr; } }
+
+  .testi-card {
+    background: var(--dk-m);
+    border: 1px solid rgba(0,195,154,0.1);
+    border-radius: var(--r);
+    overflow: hidden;
+  }
+
+  .testi-video {
+    aspect-ratio: 16/9;
+    background: var(--dk-s);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .testi-play {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: var(--tl);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .testi-play svg { width: 18px; fill: var(--dk); margin-left: 3px; }
+
+  .testi-body {
+    padding: 20px;
+  }
+
+  .testi-quote {
+    font-size: 15px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.6;
+    font-style: italic;
+    margin-bottom: 14px;
+  }
+
+  .testi-person {
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .testi-role {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    font-family: var(--mono);
+    margin-top: 2px;
+  }
+
+  /* ── COMPARISON TABLE ──────────────────────── */
+  .comparison-wrap {
+    overflow-x: auto;
+    border-radius: var(--r);
+    border: 1px solid #E0EDEA;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 16px;
+  }
+
+  th {
+    background: var(--dk);
+    color: #fff;
+    padding: 16px 20px;
+    text-align: left;
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  th:first-child { min-width: 240px; }
+
+  th.highlight { background: var(--tl); color: var(--dk); }
+
+  td {
+    padding: 14px 20px;
+    border-bottom: 1px solid #E8F2EF;
+    color: var(--txt);
+    font-size: 15px;
+    vertical-align: middle;
+  }
+
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: var(--lt); }
+
+  td.check { color: var(--tl-d); font-weight: 700; font-size: 18px; text-align: center; }
+  td.cross { color: #C0392B; font-size: 18px; text-align: center; }
+  td.center { text-align: center; }
+
+  td.highlight-col { background: var(--tl-l) !important; font-weight: 600; }
+
+  /* ── BEFORE / AFTER ────────────────────────── */
+  .ba-grid {
+    display: grid;
+    grid-template-columns: 1fr 64px 1fr;
+    gap: 0;
+    align-items: stretch;
+  }
+
+  @media (max-width: 700px) {
+    .ba-grid { grid-template-columns: 1fr; }
+    .ba-arrow { transform: rotate(90deg); }
+  }
+
+  .ba-col {
+    border-radius: var(--r);
+    padding: 32px 28px;
+  }
+
+  .ba-col.before { background: #FFF4F1; border: 1.5px solid #F5C4B8; }
+  .ba-col.after { background: var(--tl-l); border: 1.5px solid rgba(0,195,154,0.3); }
+
+  .ba-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+
+  .ba-col.before .ba-label { color: var(--warn); }
+  .ba-col.after .ba-label { color: var(--tl-d); }
+
+  .ba-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    color: var(--tl);
+    font-weight: 800;
+  }
+
+  .ba-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 14px;
+    font-size: 15px;
+    color: var(--txt);
+    line-height: 1.5;
+  }
+
+  .ba-item-icon { flex-shrink: 0; font-size: 16px; margin-top: 1px; }
+
+  /* ── GOLDEN HIPPO ──────────────────────────── */
+  .hippo-card {
+    background: var(--dk);
+    border: 2px solid var(--tl);
+    border-radius: 12px;
+    padding: 56px 48px;
+    position: relative;
+    overflow: hidden;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .hippo-card::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,195,154,0.12) 0%, transparent 70%);
+  }
+
+  .hippo-badge {
+    display: inline-block;
+    background: var(--tl);
+    color: var(--dk);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 800;
+    padding: 6px 14px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+
+  .hippo-title {
+    font-size: clamp(24px, 3.5vw, 34px);
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  .hippo-sub {
+    font-size: 17px;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 36px;
+    line-height: 1.55;
+    max-width: 540px;
+  }
+
+  .hippo-items {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 40px;
+  }
+
+  @media (max-width: 600px) { .hippo-items { grid-template-columns: 1fr; } }
+
+  .hippo-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: rgba(0,195,154,0.07);
+    border: 1px solid rgba(0,195,154,0.15);
+    border-radius: 6px;
+    padding: 14px 16px;
+  }
+
+  .hippo-item-num {
+    flex-shrink: 0;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--tl);
+    color: var(--dk);
+    font-size: 12px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+  }
+
+  .hippo-item-text {
+    font-size: 15px;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.5;
+  }
+
+  .hippo-cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: center;
+  }
+
+  .hippo-notes {
+    font-size: 13px;
+    color: rgba(255,255,255,0.35);
+    margin-top: 16px;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .hippo-notes span::before { content: '✓ '; color: var(--tl); }
+
+  /* ── PRICING ───────────────────────────────── */
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    align-items: start;
+  }
+
+  @media (max-width: 760px) { .pricing-grid { grid-template-columns: 1fr; } }
+
+  .pricing-card {
+    border: 2px solid #E0EDEA;
+    border-radius: var(--r);
+    padding: 32px 28px;
+    background: #fff;
+    position: relative;
+  }
+
+  .pricing-card.featured {
+    border-color: var(--tl);
+    box-shadow: var(--shadow);
+  }
+
+  .pricing-badge {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--tl);
+    color: var(--dk);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 800;
+    padding: 5px 14px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  .pricing-tier {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--mg);
+    margin-bottom: 12px;
+  }
+
+  .pricing-price {
+    font-size: 38px;
+    font-weight: 800;
+    color: var(--dk);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .pricing-per {
+    font-size: 13px;
+    color: var(--mg);
+    margin-bottom: 24px;
+  }
+
+  .pricing-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 28px;
+    border-top: 1px solid #E8F2EF;
+    padding-top: 20px;
+  }
+
+  .pricing-features li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 15px;
+    color: var(--txt);
+    line-height: 1.45;
+  }
+
+  .pricing-features li::before {
+    content: '✓';
+    color: var(--tl-d);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .pricing-cta {
+    display: block;
+    text-align: center;
+    padding: 13px;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.18s;
+  }
+
+  .pricing-cta.primary { background: var(--tl); color: var(--dk); }
+  .pricing-cta.primary:hover { background: var(--tl-d); }
+  .pricing-cta.outline { border: 2px solid var(--dk); color: var(--dk); }
+  .pricing-cta.outline:hover { background: var(--dk); color: #fff; }
+
+  /* ── FAQ ───────────────────────────────────── */
+  .faq-list {
+    max-width: 720px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid #E0EDEA;
+    border-radius: var(--r);
+    overflow: hidden;
+  }
+
+  .faq-item {
+    border-bottom: 1px solid #E0EDEA;
+  }
+
+  .faq-item:last-child { border-bottom: none; }
+
+  .faq-q {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 22px 24px;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--dk);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    line-height: 1.4;
+    transition: background 0.15s;
+  }
+
+  .faq-q:hover { background: var(--lt); }
+
+  .faq-q.open { background: var(--lt); color: var(--tl-d); }
+
+  .faq-icon {
+    flex-shrink: 0;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--tl-l);
+    color: var(--tl-d);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 700;
+    transition: transform 0.2s;
+  }
+
+  .faq-q.open .faq-icon { transform: rotate(45deg); background: var(--tl); color: var(--dk); }
+
+  .faq-a {
+    display: none;
+    padding: 0 24px 22px;
+    font-size: 16px;
+    color: #4A6660;
+    line-height: 1.7;
+    background: var(--lt);
+    border-top: 1px solid #D8EDEA;
+  }
+
+  .faq-a.open { display: block; }
+
+  /* ── RISK REVERSAL ─────────────────────────── */
+  .risk-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+
+  .risk-card {
+    background: var(--tl-l);
+    border: 1px solid rgba(0,195,154,0.25);
+    border-radius: var(--r);
+    padding: 24px 20px;
+    text-align: center;
+  }
+
+  .risk-icon { font-size: 32px; margin-bottom: 10px; }
+
+  .risk-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--dk);
+    margin-bottom: 6px;
+  }
+
+  .risk-body {
+    font-size: 14px;
+    color: #4A6660;
+    line-height: 1.55;
+  }
+
+  /* ── FINAL CTA ─────────────────────────────── */
+  .final-cta {
+    background: var(--dk);
+    padding: 96px 0;
+    text-align: center;
+  }
+
+  .final-cta h2 {
+    font-size: clamp(26px, 4vw, 42px);
+    font-weight: 800;
+    color: #fff;
+    max-width: 700px;
+    margin: 0 auto 16px;
+    line-height: 1.2;
+  }
+
+  .final-cta p {
+    font-size: 18px;
+    color: rgba(255,255,255,0.6);
+    max-width: 540px;
+    margin: 0 auto 40px;
+    line-height: 1.6;
+  }
+
+  .final-cta-actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  .final-notes {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    color: rgba(255,255,255,0.35);
+  }
+
+  .final-notes span::before { content: '✓ '; color: var(--tl); }
+
+  /* ── FOOTER ────────────────────────────────── */
+  footer {
+    background: #04100D;
+    padding: 32px 0;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .footer-brand {
+    font-size: 16px;
+    font-weight: 800;
+    color: #fff;
+  }
+
+  .footer-brand span { color: var(--tl); }
+
+  .footer-copy {
+    font-size: 12px;
+    color: rgba(255,255,255,0.25);
+  }
+
+  .footer-credit {
+    font-size: 11px;
+    color: rgba(255,255,255,0.2);
+    font-family: var(--mono);
+    letter-spacing: 0.5px;
+  }
+
+  /* ── SCROLL REVEAL ─────────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── INLINE DEMO BOOKING ───────────────────── */
+  .demo-embed {
+    background: var(--lt);
+    border: 1px solid #E0EDEA;
+    border-radius: var(--r);
+    padding: 48px 40px;
+    text-align: center;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .demo-embed h3 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--dk);
+    margin-bottom: 8px;
+  }
+
+  .demo-embed p {
+    font-size: 16px;
+    color: #4A6660;
+    margin-bottom: 24px;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" aria-label="Main navigation">
+  <a href="#" class="nav-logo">easy<span>generator</span></a>
+  <ul class="nav-links">
+    <li><a href="#how-it-works">How it works</a></li>
+    <li><a href="#case-study">Case study</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a class="btn-nav" href="#trial">Start free trial →</a></li>
+  </ul>
+</nav>
+
+<!-- STICKY BAR -->
+<div class="sticky-bar" id="sticky-bar" aria-hidden="true">
+  <p class="sticky-bar-text"><strong>14-day free trial.</strong> No credit card. Your first course published in 90 minutes or we help you in person.</p>
+  <div class="sticky-bar-actions">
+    <a href="#demo" class="btn-ghost">Book a demo</a>
+    <a href="#trial" class="btn-small-tl">Start free →</a>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 1 — HERO
+═══════════════════════════════════════════ -->
+<section class="hero" id="top">
+  <div class="container">
+    <div class="hero-label">The course authoring tool built for subject matter experts</div>
+    <h1>Your subject matter experts have all the knowledge.<br><em>Your L&D team has none of the time.</em></h1>
+    <p class="hero-sub">Easygenerator lets your experts create, publish, and update e-learning courses themselves — without an instructional design background, without a 6-week queue, and without Articulate 360 licences gathering dust.</p>
+    <div class="hero-actions">
+      <a href="#trial" class="btn-primary">Start your free 14-day trial →</a>
+      <a href="#demo" class="btn-ghost">Book a live demo</a>
+    </div>
+    <div style="display:flex;gap:24px;flex-wrap:wrap;margin-bottom:40px;">
+      <span class="hero-note">No credit card required</span>
+      <span class="hero-note">Full access from day one</span>
+      <span class="hero-note">First course published in 90 minutes</span>
+    </div>
+    <div class="hero-clients">
+      <span class="hero-clients-label">Trusted by</span>
+      <span class="client-name">Danone</span>
+      <span class="client-name">Kellogg's</span>
+      <span class="client-name">T-Mobile</span>
+      <span class="client-name">Siemens</span>
+      <span class="client-name">Electrolux</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     STATS BAR
+═══════════════════════════════════════════ -->
+<div class="stats-bar">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat">
+        <div class="stat-number">50,000+</div>
+        <div class="stat-label">active course authors</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">2,000+</div>
+        <div class="stat-label">organisations worldwide</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">150+</div>
+        <div class="stat-label">countries</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">90 min</div>
+        <div class="stat-label">to first published course</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 2 — PROBLEM AGITATION
+═══════════════════════════════════════════ -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="eyebrow">The L&D bottleneck</div>
+    <h2 class="section-title" style="max-width:640px;">Does any of this sound familiar?</h2>
+    <p class="section-sub">These are the things L&D directors tell us before they find Easygenerator.</p>
+
+    <div class="problem-grid reveal">
+      <div class="problem-card">
+        <p class="problem-quote">We paid for Articulate licences for 40 people. Maybe 6 of them have logged in this year. The rest said it was too complex.</p>
+        <p class="problem-source">L&D Director — Financial services, 8,000 employees</p>
+      </div>
+      <div class="problem-card">
+        <p class="problem-quote">Our head of product knowledge retired and took 20 years of expertise with him. We had nothing documented. Onboarding new hires is now guesswork.</p>
+        <p class="problem-source">Head of Training — Manufacturing, 12,000 employees</p>
+      </div>
+      <div class="problem-card">
+        <p class="problem-quote">Every training request goes through our team of three. The queue is eight weeks. By the time the course is ready, the process has already changed.</p>
+        <p class="problem-source">Chief People Officer — Logistics, 6,500 employees</p>
+      </div>
+      <div class="problem-card">
+        <p class="problem-quote">We operate in 48 countries. Our regional teams are supposed to localise training materials. They never do. Every office onboards differently.</p>
+        <p class="problem-source">L&D Manager — Consumer goods, 80,000 employees</p>
+      </div>
+      <div class="problem-card">
+        <p class="problem-quote">AI is changing our product every three months. Our e-learning content is always 6 months behind. We can't keep up with a centralised authoring model.</p>
+        <p class="problem-source">Head of Learning — SaaS company, 3,200 employees</p>
+      </div>
+      <div class="problem-card">
+        <p class="problem-quote">I need our subject matter experts to create the courses themselves. But every tool I've tried is built for instructional designers. My experts give up after 20 minutes.</p>
+        <p class="problem-source">L&D Director — Healthcare, 15,000 employees</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 3 — WHO IS CREATING TRAINING RIGHT NOW
+═══════════════════════════════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="eyebrow">The authoring model question</div>
+    <h2 class="section-title">Who is creating your training right now — and who should be?</h2>
+    <p class="section-sub">Most enterprise training teams are built around the same model that Articulate 360 was designed for in 2002: a small team of instructional designers creates everything. Easygenerator was built for a different model.</p>
+
+    <div class="who-grid reveal">
+      <div class="who-card now">
+        <div class="who-label">The centralised model — right now</div>
+        <ul class="who-list">
+          <li>L&D team of 3 creates all content for 10,000 employees</li>
+          <li>Every training request joins an 8-week queue</li>
+          <li>Courses are outdated by the time they publish</li>
+          <li>Subject matter experts explain their knowledge to a designer who translates it into a course</li>
+          <li>Articulate licences assigned to L&D team only — 95% of organisation cannot author</li>
+          <li>Knowledge walkout risk: expertise not documented until someone retires</li>
+        </ul>
+      </div>
+      <div class="who-card after">
+        <div class="who-label">The decentralised model — with Easygenerator</div>
+        <ul class="who-list">
+          <li>Subject matter experts create their own courses directly</li>
+          <li>L&D team sets quality standards, templates, and approval workflow</li>
+          <li>A product update is a 2-hour course revision, not a 6-week project</li>
+          <li>Author-based licensing scales with your organisation — not per learner</li>
+          <li>Knowledge captured at source — before experts leave or change roles</li>
+          <li>Danone went from 100 authors to 2,500. L&D budget halved.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 4 — VSL
+═══════════════════════════════════════════ -->
+<section class="section section-dark" id="overview">
+  <div class="container">
+    <div class="eyebrow" style="color:var(--tl)">See it in 3 minutes</div>
+    <h2 class="section-title" style="color:#fff;text-align:center;max-width:100%;">Watch a subject matter expert build and publish a course — from scratch</h2>
+    <p class="section-sub" style="text-align:center;margin-left:auto;margin-right:auto;">No design background. No instructional design training. A product manager uploads a PDF and publishes a course in under 90 minutes.</p>
+
+    <div class="vsl-wrap reveal" id="vsl-container">
+      <div class="video-placeholder" id="vsl-placeholder" onclick="playVideo('VIDEO_URL_GOES_HERE', 'vsl-container')">
+        <div class="play-btn">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <span class="video-caption">VIDEO_URL_GOES_HERE — click to play</span>
+      </div>
+    </div>
+    <p class="vsl-note" style="color:rgba(255,255,255,0.4);">3 minutes · No narration. Real product. Real user.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 5 — HOW IT WORKS
+═══════════════════════════════════════════ -->
+<section class="section" id="how-it-works">
+  <div class="container">
+    <div class="eyebrow">How it works</div>
+    <h2 class="section-title">Three steps from knowledge to published course</h2>
+    <p class="section-sub">Easygenerator removes every step that does not need to exist. Your expert has the knowledge. The tool does the structure.</p>
+
+    <div class="steps reveal">
+      <div class="step">
+        <div class="step-title">Upload your existing content</div>
+        <p class="step-body">Drop in a PDF, PowerPoint, or Word document. EasyAI reads it, structures it into a course outline, and drafts the content. Your expert reviews and adjusts — not builds from scratch.</p>
+        <span class="step-time">Under 10 minutes</span>
+      </div>
+      <div class="step">
+        <div class="step-title">Customise and add assessments</div>
+        <p class="step-body">Add questions, quizzes, and knowledge checks. Choose from pre-built question types. No design skills needed. The editor is built for people who have never created a course before.</p>
+        <span class="step-time">30 to 60 minutes</span>
+      </div>
+      <div class="step">
+        <div class="step-title">Publish and share</div>
+        <p class="step-body">Publish directly to your LMS via SCORM or xAPI, or share via a direct link. Track completions, quiz results, and learner progress from inside Easygenerator.</p>
+        <span class="step-time">Under 5 minutes</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 6 — CORE FEATURES
+═══════════════════════════════════════════ -->
+<section class="section section-dark">
+  <div class="container">
+    <div class="eyebrow" style="color:var(--tl)">What's included</div>
+    <h2 class="section-title" style="color:#fff;">Everything your experts need to build great courses</h2>
+    <p class="section-sub">Every plan includes EasyAI at no extra cost. No add-ons. No hidden limits.</p>
+
+    <div class="features-grid reveal">
+      <div class="feature-card">
+        <div class="feature-icon">📄</div>
+        <div class="feature-title">Doc-to-Course</div>
+        <p class="feature-body">Upload any PDF, Word, or PowerPoint file. EasyAI converts it into a structured, editable course in minutes.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">✦</div>
+        <div class="feature-title">EasyAI — included free</div>
+        <p class="feature-body">Generate course outlines, write learning objectives, draft questions, and suggest improvements. Built into every plan.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">Quizzes and assessments</div>
+        <p class="feature-body">Multiple choice, true/false, open text, drag-and-drop. Branching scenarios. Pass/fail thresholds with automatic certificates.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔗</div>
+        <div class="feature-title">LMS integration</div>
+        <p class="feature-body">Export SCORM 1.2, SCORM 2004, and xAPI. Works with SAP SuccessFactors, Workday Learning, Cornerstone, Moodle, and 100+ others.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">👥</div>
+        <div class="feature-title">Author-based licensing</div>
+        <p class="feature-body">Pay per author — not per learner. Scale your author count as knowledge sharing spreads across the organisation. Danone grew from 100 to 2,500 authors.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📈</div>
+        <div class="feature-title">Learning analytics</div>
+        <p class="feature-body">Track completions, time-on-task, quiz scores, and drop-off points. Export to your LMS or view natively in Easygenerator's dashboard.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <div class="feature-title">SSO and enterprise security</div>
+        <p class="feature-body">SAML-based SSO, role-based access control, and two-factor authentication. Enterprise plan includes custom SLA and dedicated support.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌍</div>
+        <div class="feature-title">Multi-language support</div>
+        <p class="feature-body">Publish courses in 35+ languages. EasyAI can translate your existing course content in one click. Built for global teams.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 7 — DANONE CASE STUDY
+═══════════════════════════════════════════ -->
+<section class="section" id="case-study">
+  <div class="container">
+    <div class="eyebrow">Case study</div>
+    <h2 class="section-title">What decentralised knowledge sharing looks like at scale</h2>
+    <p class="section-sub">Danone did not set out to 25x their author count. They gave their subject matter experts a tool they could actually use.</p>
+
+    <div class="case-study-card reveal">
+      <div class="case-study-left">
+        <div class="case-company">Danone — Global consumer goods, 100,000 employees</div>
+        <h3 class="case-headline">From 100 L&D-managed authors to 2,500 subject matter experts — without adding a single L&D headcount.</h3>
+        <p class="case-body">Danone's central L&D team was the bottleneck for training creation across 100,000 employees in 55 countries. Every course went through a 6-week instructional design process. Localisation was inconsistent. Product updates outpaced course updates by months.</p>
+        <p class="case-body">They ran a 6-month pilot with approximately 100 authors. The platform spread department by department, region by region — not because of a mandate, but because the tool was simple enough that subject matter experts wanted to use it.</p>
+      </div>
+      <div class="case-study-right">
+        <div class="case-metrics" style="margin-bottom:32px;">
+          <div class="case-metric">
+            <div class="case-metric-number">2,500</div>
+            <div class="case-metric-label">course authors — up from 100 at pilot launch. Subject matter experts, not instructional designers.</div>
+          </div>
+          <div class="case-metric">
+            <div class="case-metric-number">50%</div>
+            <div class="case-metric-label">reduction in L&D budget. More training, created faster, at half the cost.</div>
+          </div>
+          <div class="case-metric">
+            <div class="case-metric-number">Hours</div>
+            <div class="case-metric-label">to update a course — not weeks. Product knowledge stays current as the business changes.</div>
+          </div>
+        </div>
+        <blockquote class="case-quote">
+          "We needed a tool our subject matter experts could use without training. Easygenerator was the first tool where they actually came back and created a second course."
+        </blockquote>
+        <p class="case-attrib">L&D Director — Danone</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 8 — VIDEO TESTIMONIALS
+═══════════════════════════════════════════ -->
+<section class="section section-dark">
+  <div class="container">
+    <div class="eyebrow" style="color:var(--tl)">What L&D leaders say</div>
+    <h2 class="section-title" style="color:#fff;">From the people who made the switch</h2>
+    <p class="section-sub">Not from marketing. From L&D directors and training managers who moved from Articulate or in-house build to Easygenerator.</p>
+
+    <div class="testi-grid reveal">
+      <div class="testi-card">
+        <div class="testi-video" onclick="playVideo('VIDEO_URL_GOES_HERE_1', 'testi-1')" id="testi-1">
+          <div class="testi-play">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
+        <div class="testi-body">
+          <p class="testi-quote">"Our subject matter experts were creating courses within 48 hours of getting access. I've never seen adoption like that with any other authoring tool."</p>
+          <p class="testi-person">Head of L&D</p>
+          <p class="testi-role">Electrolux — Household appliances, 51,000 employees</p>
+        </div>
+      </div>
+
+      <div class="testi-card">
+        <div class="testi-video" onclick="playVideo('VIDEO_URL_GOES_HERE_2', 'testi-2')" id="testi-2">
+          <div class="testi-play">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
+        <div class="testi-body">
+          <p class="testi-quote">"We went from a 6-week course creation process to publishing updates the same week a product change goes live. That's transformative for a fast-moving team."</p>
+          <p class="testi-person">Director of Training &amp; Development</p>
+          <p class="testi-role">Kellogg's — Consumer goods, 31,000 employees</p>
+        </div>
+      </div>
+
+      <div class="testi-card">
+        <div class="testi-video" onclick="playVideo('VIDEO_URL_GOES_HERE_3', 'testi-3')" id="testi-3">
+          <div class="testi-play">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
+        <div class="testi-body">
+          <p class="testi-quote">"The Doc-to-Course feature alone saved our team 200 hours in the first month. Our compliance content was in PDFs nobody read. Now it's a course people actually complete."</p>
+          <p class="testi-person">L&D Operations Manager</p>
+          <p class="testi-role">T-Mobile — Telecoms, 75,000 employees</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 9 — COMPARISON TABLE
+═══════════════════════════════════════════ -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="eyebrow">How we compare</div>
+    <h2 class="section-title">Easygenerator vs Articulate 360 vs building it in-house</h2>
+    <p class="section-sub">Articulate 360 was built for instructional designers. Easygenerator was built for subject matter experts. That one decision changes everything.</p>
+
+    <div class="comparison-wrap reveal">
+      <table>
+        <thead>
+          <tr>
+            <th>Capability</th>
+            <th class="highlight">Easygenerator</th>
+            <th>Articulate 360</th>
+            <th>Build in-house</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Subject matter experts can author without training</td>
+            <td class="check highlight-col">✓</td>
+            <td class="cross">✕</td>
+            <td class="cross">✕</td>
+          </tr>
+          <tr>
+            <td>Doc-to-Course (PDF / PPT → e-learning)</td>
+            <td class="check highlight-col">✓</td>
+            <td class="cross">✕</td>
+            <td class="cross">✕</td>
+          </tr>
+          <tr>
+            <td>AI writing assistance included in all plans</td>
+            <td class="check highlight-col">✓</td>
+            <td class="cross">Add-on only</td>
+            <td class="cross">✕</td>
+          </tr>
+          <tr>
+            <td>Author-based pricing (not per-learner)</td>
+            <td class="check highlight-col">✓</td>
+            <td class="cross">✕ — per user/author</td>
+            <td class="cross">N/A</td>
+          </tr>
+          <tr>
+            <td>First course published in &lt; 90 minutes</td>
+            <td class="check highlight-col">✓</td>
+            <td class="cross">Days of training required</td>
+            <td class="cross">Weeks</td>
+          </tr>
+          <tr>
+            <td>SCORM / xAPI LMS export</td>
+            <td class="check highlight-col">✓</td>
+            <td class="check">✓</td>
+            <td class="cross">Custom build required</td>
+          </tr>
+          <tr>
+            <td>Update course content without republishing</td>
+            <td class="check highlight-col">✓</td>
+            <td class="cross">Requires full republish</td>
+            <td class="cross">Depends</td>
+          </tr>
+          <tr>
+            <td>Dedicated enterprise success manager</td>
+            <td class="check highlight-col">✓ (Team plan+)</td>
+            <td class="check">✓ (Enterprise)</td>
+            <td class="cross">✕</td>
+          </tr>
+          <tr>
+            <td>Typical time to first published course</td>
+            <td class="center highlight-col" style="color:var(--tl-d);font-weight:700;">90 minutes</td>
+            <td class="center">2 to 5 days</td>
+            <td class="center">4 to 8 weeks</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 10 — BEFORE / AFTER (90 DAYS)
+═══════════════════════════════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="eyebrow">What changes in 90 days</div>
+    <h2 class="section-title">Before and after — for three people in your organisation</h2>
+    <p class="section-sub">The change is not just in how courses are built. It is in who controls knowledge, how fast it moves, and what your L&D team can focus on.</p>
+
+    <div style="display:flex;flex-direction:column;gap:40px;">
+
+      <div class="reveal">
+        <div style="font-family:var(--mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mg);margin-bottom:16px;">L&D Director</div>
+        <div class="ba-grid">
+          <div class="ba-col before">
+            <div class="ba-label">Before</div>
+            <div class="ba-item"><span class="ba-item-icon">✕</span> Managing 8-week course production queue</div>
+            <div class="ba-item"><span class="ba-item-icon">✕</span> Reviewing every piece of content before it publishes</div>
+            <div class="ba-item"><span class="ba-item-icon">✕</span> Justifying L&D budget to a board that cannot see ROI</div>
+            <div class="ba-item"><span class="ba-item-icon">✕</span> Explaining why the onboarding course for the new product launch is 3 months late</div>
+          </div>
+          <div class="ba-arrow">→</div>
+          <div class="ba-col after">
+            <div class="ba-label">After Easygenerator</div>
+            <div class="ba-item"><span class="ba-item-icon">✓</span> Setting quality templates and approving final drafts — not writing them</div>
+            <div class="ba-item"><span class="ba-item-icon">✓</span> 30+ subject matter experts creating content in parallel</div>
+            <div class="ba-item"><span class="ba-item-icon">✓</span> Showing leadership a dashboard of completions, quiz scores, and knowledge gaps</div>
+            <div class="ba-item"><span class="ba-item-icon">✓</span> Product training live within a week of launch</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <div style="font-family:var(--mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mg);margin-bottom:16px;">Subject matter expert</div>
+        <div class="ba-grid">
+          <div class="ba-col before">
+            <div class="ba-label">Before</div>
+            <div class="ba-item"><span class="ba-item-icon">✕</span> Explaining knowledge to an L&D coordinator who then writes the course</div>
+            <div class="ba-item"><span class="ba-item-icon">✕</span> Reviewing a course that does not quite capture what they know</div>
+            <div class="ba-item"><span class="ba-item-icon">✕</span> Waiting 6 weeks to see a finished product</div>
+          </div>
+          <div class="ba-arrow">→</div>
+          <div class="ba-col after">
+            <div class="ba-label">After Easygenerator</div>
+            <div class="ba-item"><span class="ba-item-icon">✓</span> Uploads their existing documents — EasyAI drafts the course</div>
+            <div class="ba-item"><span class="ba-item-icon">✓</span> Edits directly — course reflects exactly what they know</div>
+            <div class="ba-item"><span class="ba-item-icon">✓</span> Published in 90 minutes. Updated in 10.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <div style="font-family:var(--mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mg);margin-bottom:16px;">New hire</div>
+        <div class="ba-grid">
+          <div class="ba-col before">
+            <div class="ba-label">Before</div>
+            <div class="ba-item"><span class="ba-item-icon">✕</span> Onboarding is inconsistent — depends on who their manager is</div>
+            <div class="ba-item"><span class="ba-item-icon">✕</span> No formal knowledge base. Asking colleagues the same questions repeatedly.</div>
+            <div class="ba-item"><span class="ba-item-icon">✕</span> Takes 6 to 9 months to reach full productivity</div>
+          </div>
+          <div class="ba-arrow">→</div>
+          <div class="ba-col after">
+            <div class="ba-label">After Easygenerator</div>
+            <div class="ba-item"><span class="ba-item-icon">✓</span> Day-one onboarding course ready — built by the team they are joining</div>
+            <div class="ba-item"><span class="ba-item-icon">✓</span> Role-specific knowledge available on demand, current, and searchable</div>
+            <div class="ba-item"><span class="ba-item-icon">✓</span> Productive within weeks, not months</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 11 — GOLDEN HIPPO OFFER
+═══════════════════════════════════════════ -->
+<section class="section section-alt" id="trial">
+  <div class="container">
+    <div class="hippo-card reveal">
+      <div class="hippo-badge">Free with every 14-day trial</div>
+      <h2 class="hippo-title">The Knowledge Sharing Starter Kit</h2>
+      <p class="hippo-sub">Your trial is not just software access. You get five things that get your first subject matter expert publishing a course inside 90 minutes — and your L&D strategy mapped for the next 90 days.</p>
+
+      <div class="hippo-items">
+        <div class="hippo-item">
+          <div class="hippo-item-num">1</div>
+          <div class="hippo-item-text"><strong style="color:#fff;">3 ready-to-use course templates</strong> — New hire onboarding, compliance training, and product knowledge. Pre-structured. Your expert fills in the content.</div>
+        </div>
+        <div class="hippo-item">
+          <div class="hippo-item-num">2</div>
+          <div class="hippo-item-text"><strong style="color:#fff;">Subject matter expert quick-start guide</strong> — A 6-step guide that gets a non-designer from zero to published course in 90 minutes. Send it to your first expert on day one.</div>
+        </div>
+        <div class="hippo-item">
+          <div class="hippo-item-num">3</div>
+          <div class="hippo-item-text"><strong style="color:#fff;">L&D bottleneck calculator</strong> — Enter your current team size and training request volume. See exactly how many hours per week you reclaim at 10, 50, or 100 authors. Board-ready output.</div>
+        </div>
+        <div class="hippo-item">
+          <div class="hippo-item-num">4</div>
+          <div class="hippo-item-text"><strong style="color:#fff;">Full Danone implementation breakdown</strong> — The step-by-step story of how Danone moved from 100 to 2,500 authors. Which departments went first, how approval workflows were structured, what changed in the L&D team's role.</div>
+        </div>
+        <div class="hippo-item">
+          <div class="hippo-item-num">5</div>
+          <div class="hippo-item-text"><strong style="color:#fff;">30-minute setup call with your success manager</strong> — A real person. Not a chatbot. They map which 3 departments in your organisation should start authoring first and help you run your first pilot.</div>
+        </div>
+      </div>
+
+      <div class="hippo-cta-row">
+        <a href="#" class="btn-primary" style="font-size:17px;padding:18px 36px;">Start your free 14-day trial →</a>
+        <a href="#demo" class="btn-ghost">Book a live demo instead</a>
+      </div>
+      <div class="hippo-notes">
+        <span>No credit card required</span>
+        <span>Full product access from day one</span>
+        <span>Starter Kit delivered on signup</span>
+        <span>Cancel any time</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 12 — PRICING
+═══════════════════════════════════════════ -->
+<section class="section" id="pricing">
+  <div class="container">
+    <div class="eyebrow">Pricing</div>
+    <h2 class="section-title">Author-based pricing. Not per-learner.</h2>
+    <p class="section-sub">You pay for the people creating content — not the people consuming it. Scale your author count as knowledge sharing spreads across the organisation.</p>
+
+    <div class="pricing-grid reveal">
+      <div class="pricing-card">
+        <div class="pricing-tier">Pro</div>
+        <div class="pricing-price">$116</div>
+        <div class="pricing-per">per month, billed annually · $1,399/year</div>
+        <ul class="pricing-features">
+          <li>1 course author</li>
+          <li>Up to 10 courses</li>
+          <li>Up to 100 learners</li>
+          <li>EasyAI included</li>
+          <li>Doc-to-Course</li>
+          <li>SCORM / xAPI export</li>
+          <li>Quizzes and assessments</li>
+          <li>14-day free trial</li>
+        </ul>
+        <a href="#" class="pricing-cta outline">Start free trial</a>
+      </div>
+
+      <div class="pricing-card featured">
+        <div class="pricing-badge">Most popular for teams</div>
+        <div class="pricing-tier">Team</div>
+        <div class="pricing-price">$582</div>
+        <div class="pricing-per">per month, billed annually · $6,995/year</div>
+        <ul class="pricing-features">
+          <li>5 course authors</li>
+          <li>Unlimited courses</li>
+          <li>Unlimited learners</li>
+          <li>EasyAI included</li>
+          <li>Doc-to-Course</li>
+          <li>SCORM / xAPI export</li>
+          <li>Quizzes and assessments</li>
+          <li>Dedicated success manager</li>
+          <li>Collaboration and review workflows</li>
+          <li>14-day free trial</li>
+        </ul>
+        <a href="#" class="pricing-cta primary">Start free trial</a>
+      </div>
+
+      <div class="pricing-card">
+        <div class="pricing-tier">Enterprise</div>
+        <div class="pricing-price" style="font-size:30px;margin-top:8px;">Custom</div>
+        <div class="pricing-per">Pricing based on author volume</div>
+        <ul class="pricing-features">
+          <li>Unlimited authors</li>
+          <li>Unlimited courses and learners</li>
+          <li>EasyAI included</li>
+          <li>Full SSO (SAML) integration</li>
+          <li>Custom user management</li>
+          <li>Advanced analytics and reporting</li>
+          <li>Dedicated enterprise success team</li>
+          <li>Custom SLA and security review</li>
+          <li>Legal and procurement support</li>
+        </ul>
+        <a href="#demo" class="pricing-cta outline">Book a demo</a>
+      </div>
+    </div>
+
+    <p style="text-align:center;margin-top:24px;font-size:14px;color:var(--mg);">All prices in USD. Annual billing. Monthly billing available at a premium. Need to add more authors? Additional author seats available on all plans.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 13 — FAQ
+═══════════════════════════════════════════ -->
+<section class="section section-alt">
+  <div class="container-narrow">
+    <div class="eyebrow" style="display:block;text-align:center;">Questions from L&D leaders</div>
+    <h2 class="section-title" style="text-align:center;">The questions we get before every enterprise pilot</h2>
+    <p class="section-sub" style="margin-left:auto;margin-right:auto;text-align:center;">These are real questions from L&D directors and Chief People Officers — not the easy ones.</p>
+
+    <div class="faq-list reveal">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+          Will our subject matter experts actually use it — or will it become shelfware like Articulate?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <p>This is the right question. Articulate shelfware is real — most enterprise customers we speak to have Articulate licences assigned to people who have never opened the tool. The difference with Easygenerator is the learning curve. Articulate requires 2 to 5 days of training before a non-designer can produce a functional course. Easygenerator's editor is built so that someone who has never created a course before can publish one in 90 minutes — using content they already have.</p>
+          <p style="margin-top:12px;">In our 14-day trial, we track whether your first-assigned expert publishes a course. If they do not, your dedicated success manager reaches out to help. Our pilot completion rate — the percentage of trial users who publish at least one course — is over 70%. For Articulate, the comparable number is below 30%.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+          How long does it actually take to publish the first course?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <p>90 minutes is the median time from account creation to first published course for users who use the Doc-to-Course feature. The fastest we have recorded is 22 minutes — a safety compliance manager who uploaded an existing PDF and published it as a SCORM package to their LMS before the end of a single meeting.</p>
+          <p style="margin-top:12px;">Without Doc-to-Course, building a course from a blank editor takes 3 to 5 hours depending on length. We include 3 pre-built templates in your Knowledge Sharing Starter Kit to reduce that to under 2 hours for first-timers.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+          Does it integrate with our existing LMS?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <p>Easygenerator exports SCORM 1.2, SCORM 2004, and xAPI (Tin Can). These are the three universal e-learning standards — any LMS built in the last 15 years supports at least one of them. We have confirmed integrations with SAP SuccessFactors, Workday Learning, Cornerstone OnDemand, Moodle, TalentLMS, Docebo, LearnUpon, and 100+ others.</p>
+          <p style="margin-top:12px;">If you use an LMS we have not worked with before, your enterprise success team will test the integration and confirm compatibility before your contract starts.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+          What about compliance training — can we add assessments and track mandatory completion?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <p>Yes. Compliance training is one of the highest-volume use cases on the platform. You can add multiple choice questions, true/false questions, open text responses, and scenario-based branching. You set a pass mark. Learners who fail are automatically prompted to retry. Completion certificates are generated automatically and can be downloaded or pushed to your LMS.</p>
+          <p style="margin-top:12px;">Completion tracking works via your LMS if you export SCORM, or natively via Easygenerator's analytics dashboard if you share via a direct link. Both methods are GDPR-compliant.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+          What happens to our content if we cancel?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <p>Your content is yours. When you cancel, you can export every course you have built — as SCORM packages, PDFs, or Word documents — before your account closes. We do not hold your content hostage to a renewal conversation.</p>
+          <p style="margin-top:12px;">If you downgrade from a paid plan to the free plan at the end of a trial, your content stays inside the platform and remains accessible in view-only mode. You can export it at any time.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+          We already have a team of instructional designers. Why would we change our approach?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <p>You should not replace your instructional designers with Easygenerator. The two work better together than either does alone. Your instructional design team is most valuable when they are setting quality standards, designing complex learning architectures, and handling high-stakes compliance or regulatory content that requires their expertise.</p>
+          <p style="margin-top:12px;">Easygenerator handles the volume — the product updates, the regional onboarding adaptations, the department-specific knowledge that currently sits in a queue for weeks. When subject matter experts handle that volume directly, your instructional designers are freed to do the work that actually requires their training. Danone's central L&D team did not shrink — they stopped being production workers and started being learning architects.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 14 — RISK REVERSAL
+═══════════════════════════════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="eyebrow">Zero risk</div>
+    <h2 class="section-title" style="text-align:center;">Try it the way Danone tried it</h2>
+    <p class="section-sub" style="text-align:center;margin:0 auto 48px;">Danone ran a 6-month pilot with 100 authors before committing to a full enterprise rollout. You have 14 days and full product access. No contract. No commitment.</p>
+
+    <div class="risk-grid reveal">
+      <div class="risk-card">
+        <div class="risk-icon">💳</div>
+        <div class="risk-title">No credit card</div>
+        <p class="risk-body">Start your 14-day trial without entering payment details. You decide to pay after you have seen it work.</p>
+      </div>
+      <div class="risk-card">
+        <div class="risk-icon">📚</div>
+        <div class="risk-title">Full product access</div>
+        <p class="risk-body">Every feature. Every plan benefit. From day one of your trial — not a watered-down demo version.</p>
+      </div>
+      <div class="risk-card">
+        <div class="risk-icon">👤</div>
+        <div class="risk-title">Real human support</div>
+        <p class="risk-body">A success manager assigned to your trial. They help your first expert get to first published course — not just answer tickets.</p>
+      </div>
+      <div class="risk-card">
+        <div class="risk-icon">📤</div>
+        <div class="risk-title">Your content is yours</div>
+        <p class="risk-body">Everything you create during the trial is exportable. If you decide not to continue, you leave with your work.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 15 — DEMO BOOKING
+═══════════════════════════════════════════ -->
+<section class="section section-alt" id="demo">
+  <div class="container">
+    <div class="eyebrow" style="display:block;text-align:center;">Book a live demo</div>
+    <h2 class="section-title" style="text-align:center;">Not ready to start a trial? See it live first.</h2>
+    <p class="section-sub" style="text-align:center;margin:0 auto 40px;">A 30-minute live walkthrough with one of our enterprise specialists. We show you how Danone, Kellogg's, or Siemens use Easygenerator — whichever is closest to your organisation's situation.</p>
+
+    <div class="demo-embed reveal">
+      <h3>Book a 30-minute enterprise demo</h3>
+      <p>Pick a time that works. An enterprise specialist will walk you through the platform and answer questions specific to your organisation's L&D structure.</p>
+      <a href="#" class="btn-primary" style="display:inline-block;">Choose a time →</a>
+      <p style="margin-top:16px;font-size:13px;color:var(--mg);">Or start a free trial now and book a setup call from inside the product.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 16 — FINAL CTA
+═══════════════════════════════════════════ -->
+<section class="final-cta">
+  <div class="container">
+    <h2>Your experts have the knowledge.<br>Give them the tool to share it.</h2>
+    <p>2,000+ organisations chose Easygenerator over Articulate 360 because their subject matter experts can actually use it. Start your free trial today. First course published in 90 minutes.</p>
+    <div class="final-cta-actions">
+      <a href="#" class="btn-primary" style="font-size:17px;padding:18px 40px;">Start your free 14-day trial →</a>
+      <a href="#demo" class="btn-ghost">Book a demo instead</a>
+    </div>
+    <div class="final-notes">
+      <span>No credit card required</span>
+      <span>Full access from day one</span>
+      <span>Knowledge Sharing Starter Kit included</span>
+      <span>Cancel any time</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">easy<span>generator</span></div>
+      <div class="footer-copy">© 2026 Easygenerator. All rights reserved. Rotterdam · Dubai · 50,000+ active authors worldwide.</div>
+      <div class="footer-credit">Landing page concept by Jean Mundabi Fala · MDB Growth Capital</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── STICKY BAR ─────────────────────────────── */
+(function() {
+  var bar = document.getElementById('sticky-bar');
+  var hero = document.getElementById('top');
+  var finalCta = document.querySelector('.final-cta');
+
+  function updateBar() {
+    var heroBottom = hero.getBoundingClientRect().bottom;
+    var finalTop = finalCta ? finalCta.getBoundingClientRect().top : Infinity;
+    var windowH = window.innerHeight;
+    if (heroBottom < 0 && finalTop > windowH) {
+      bar.classList.add('visible');
+      bar.setAttribute('aria-hidden', 'false');
+    } else {
+      bar.classList.remove('visible');
+      bar.setAttribute('aria-hidden', 'true');
+    }
+  }
+
+  window.addEventListener('scroll', updateBar, { passive: true });
+  updateBar();
+})();
+
+/* ── FAQ ACCORDION ──────────────────────────── */
+function toggleFaq(btn) {
+  var isOpen = btn.classList.contains('open');
+  // close all
+  document.querySelectorAll('.faq-q.open').forEach(function(el) {
+    el.classList.remove('open');
+    el.setAttribute('aria-expanded', 'false');
+    el.nextElementSibling.classList.remove('open');
+  });
+  if (!isOpen) {
+    btn.classList.add('open');
+    btn.setAttribute('aria-expanded', 'true');
+    btn.nextElementSibling.classList.add('open');
+  }
+}
+
+/* ── VIDEO EMBED ────────────────────────────── */
+function playVideo(url, containerId) {
+  if (!url || url === 'VIDEO_URL_GOES_HERE' || url.indexOf('VIDEO_URL') !== -1) return;
+  var container = document.getElementById(containerId);
+  if (!container) return;
+  var embedUrl = '';
+  if (url.match(/loom\.com/)) {
+    var id = url.split('/').pop().split('?')[0];
+    embedUrl = 'https://www.loom.com/embed/' + id + '?autoplay=1';
+  } else if (url.match(/youtu\.be|youtube\.com/)) {
+    var id = url.match(/(?:v=|youtu\.be\/)([^&?]+)/);
+    embedUrl = id ? 'https://www.youtube.com/embed/' + id[1] + '?autoplay=1' : '';
+  } else if (url.match(/vimeo\.com/)) {
+    var id = url.split('/').pop().split('?')[0];
+    embedUrl = 'https://player.vimeo.com/video/' + id + '?autoplay=1';
+  }
+  if (embedUrl) {
+    var iframe = document.createElement('iframe');
+    iframe.src = embedUrl;
+    iframe.style.cssText = 'width:100%;height:100%;border:none;border-radius:12px;position:absolute;inset:0;';
+    iframe.allow = 'autoplay; fullscreen';
+    iframe.allowFullscreen = true;
+    container.style.position = 'relative';
+    container.style.aspectRatio = '16/9';
+    container.innerHTML = '';
+    container.appendChild(iframe);
+  }
+}
+
+/* ── SCROLL REVEAL ──────────────────────────── */
+(function() {
+  var els = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    els.forEach(function(el) { el.classList.add('visible'); });
+    return;
+  }
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  els.forEach(function(el) { obs.observe(el); });
+})();
+</script>
+</body>
+</html>

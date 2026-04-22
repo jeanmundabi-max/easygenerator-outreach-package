@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Demand Gen Infrastructure Scorecard — MDB Growth Capital</title>
+<style>
+  :root {
+    --tl: #00C39A;
+    --tl-d: #009E7C;
+    --dk: #09110F;
+    --dk-s: #0F1E1A;
+    --lt: #F4FBF9;
+    --lt-s: #E8F7F3;
+    --mg: #B0C4BE;
+    --warn: #FF6B6B;
+    --mid: #FFB347;
+    --good: #00C39A;
+    --r: 6px;
+    --mono: 'Courier New', monospace;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--dk);
+    color: var(--lt);
+    font-family: var(--sans);
+    font-size: 18px;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 40px 16px 80px;
+  }
+
+  /* ---- HEADER ---- */
+  .brand {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--tl);
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  .page-title {
+    font-size: clamp(22px, 4vw, 30px);
+    font-weight: 700;
+    text-align: center;
+    color: #fff;
+    max-width: 640px;
+    margin-bottom: 8px;
+  }
+
+  .page-sub {
+    font-size: 15px;
+    color: var(--mg);
+    text-align: center;
+    max-width: 520px;
+    margin-bottom: 40px;
+  }
+
+  /* ---- PROGRESS ---- */
+  .progress-wrap {
+    width: 100%;
+    max-width: 660px;
+    margin-bottom: 32px;
+  }
+
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--mg);
+    margin-bottom: 8px;
+  }
+
+  .progress-track {
+    height: 4px;
+    background: var(--dk-s);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--tl);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  /* ---- CARD ---- */
+  .card {
+    background: var(--dk-s);
+    border: 1px solid rgba(0,195,154,0.15);
+    border-radius: var(--r);
+    padding: 40px;
+    width: 100%;
+    max-width: 660px;
+    margin-bottom: 24px;
+  }
+
+  .q-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--tl);
+    margin-bottom: 12px;
+  }
+
+  .q-text {
+    font-size: clamp(17px, 2.5vw, 20px);
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.4;
+    margin-bottom: 8px;
+  }
+
+  .q-context {
+    font-size: 14px;
+    color: var(--mg);
+    margin-bottom: 28px;
+    line-height: 1.5;
+  }
+
+  /* ---- OPTIONS ---- */
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .opt {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 18px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: var(--r);
+    cursor: pointer;
+    transition: all 0.18s ease;
+    text-align: left;
+    width: 100%;
+  }
+
+  .opt:hover {
+    border-color: var(--tl);
+    background: rgba(0,195,154,0.06);
+  }
+
+  .opt.selected {
+    border-color: var(--tl);
+    background: rgba(0,195,154,0.12);
+  }
+
+  .opt-radio {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.25);
+    flex-shrink: 0;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.18s ease;
+  }
+
+  .opt.selected .opt-radio {
+    border-color: var(--tl);
+    background: var(--tl);
+  }
+
+  .opt.selected .opt-radio::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--dk);
+  }
+
+  .opt-body {}
+
+  .opt-title {
+    font-size: 15px;
+    color: #fff;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .opt-sub {
+    font-size: 13px;
+    color: var(--mg);
+    margin-top: 2px;
+  }
+
+  /* ---- NAV ---- */
+  .nav-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 28px;
+  }
+
+  .btn-back {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: var(--mg);
+    padding: 10px 20px;
+    border-radius: var(--r);
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.18s;
+  }
+
+  .btn-back:hover {
+    border-color: rgba(255,255,255,0.3);
+    color: #fff;
+  }
+
+  .btn-next {
+    background: var(--tl);
+    color: var(--dk);
+    border: none;
+    padding: 12px 28px;
+    border-radius: var(--r);
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 700;
+    transition: background 0.18s;
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .btn-next.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .btn-next.active:hover {
+    background: var(--tl-d);
+  }
+
+  /* ---- EMAIL GATE ---- */
+  .gate-card {
+    background: var(--dk-s);
+    border: 1px solid rgba(0,195,154,0.25);
+    border-radius: var(--r);
+    padding: 48px 40px;
+    width: 100%;
+    max-width: 660px;
+    text-align: center;
+  }
+
+  .gate-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--tl);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .gate-title {
+    font-size: clamp(22px, 3.5vw, 28px);
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+
+  .gate-body {
+    font-size: 15px;
+    color: var(--mg);
+    max-width: 480px;
+    margin: 0 auto 32px;
+    line-height: 1.6;
+  }
+
+  .form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .form-input {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: var(--r);
+    padding: 14px 18px;
+    font-size: 16px;
+    color: #fff;
+    width: 100%;
+    transition: border-color 0.18s;
+    font-family: var(--sans);
+  }
+
+  .form-input::placeholder { color: rgba(255,255,255,0.3); }
+
+  .form-input:focus {
+    outline: none;
+    border-color: var(--tl);
+  }
+
+  .btn-results {
+    background: var(--tl);
+    color: var(--dk);
+    border: none;
+    padding: 16px 32px;
+    border-radius: var(--r);
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
+    width: 100%;
+    transition: background 0.18s;
+    margin-top: 4px;
+  }
+
+  .btn-results:hover { background: var(--tl-d); }
+
+  .gate-privacy {
+    font-size: 12px;
+    color: rgba(255,255,255,0.3);
+    margin-top: 16px;
+  }
+
+  /* ---- RESULTS ---- */
+  .results-card {
+    background: var(--dk-s);
+    border: 1px solid rgba(0,195,154,0.2);
+    border-radius: var(--r);
+    padding: 48px 40px;
+    width: 100%;
+    max-width: 660px;
+  }
+
+  .score-ring {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 0 auto 24px;
+    border: 4px solid;
+  }
+
+  .score-ring.low { border-color: var(--warn); }
+  .score-ring.mid { border-color: var(--mid); }
+  .score-ring.high { border-color: var(--good); }
+
+  .score-number {
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .score-ring.low .score-number { color: var(--warn); }
+  .score-ring.mid .score-number { color: var(--mid); }
+  .score-ring.high .score-number { color: var(--good); }
+
+  .score-denom {
+    font-size: 12px;
+    color: var(--mg);
+    font-family: var(--mono);
+  }
+
+  .tier-label {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  .tier-label.low { color: var(--warn); }
+  .tier-label.mid { color: var(--mid); }
+  .tier-label.high { color: var(--good); }
+
+  .results-title {
+    font-size: clamp(20px, 3vw, 26px);
+    font-weight: 700;
+    text-align: center;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+
+  .results-sub {
+    font-size: 15px;
+    color: var(--mg);
+    text-align: center;
+    max-width: 480px;
+    margin: 0 auto 32px;
+    line-height: 1.6;
+  }
+
+  .findings-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 32px;
+  }
+
+  .finding-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    background: rgba(255,255,255,0.03);
+    border-radius: var(--r);
+    border-left: 3px solid;
+  }
+
+  .finding-row.gap { border-left-color: var(--warn); }
+  .finding-row.risk { border-left-color: var(--mid); }
+  .finding-row.ok { border-left-color: var(--good); }
+
+  .finding-icon {
+    font-size: 16px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .finding-text {
+    font-size: 14px;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.5;
+  }
+
+  .finding-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+
+  .finding-row.gap .finding-label { color: var(--warn); }
+  .finding-row.risk .finding-label { color: var(--mid); }
+  .finding-row.ok .finding-label { color: var(--good); }
+
+  .offer-block {
+    background: rgba(0,195,154,0.08);
+    border: 1px solid rgba(0,195,154,0.3);
+    border-radius: var(--r);
+    padding: 28px 24px;
+    margin-bottom: 24px;
+  }
+
+  .offer-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--tl);
+    margin-bottom: 10px;
+  }
+
+  .offer-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+
+  .offer-items {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+
+  .offer-items li {
+    font-size: 14px;
+    color: rgba(255,255,255,0.8);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .offer-items li::before {
+    content: '→';
+    color: var(--tl);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .btn-cta {
+    display: block;
+    width: 100%;
+    background: var(--tl);
+    color: var(--dk);
+    border: none;
+    padding: 16px 32px;
+    border-radius: var(--r);
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    transition: background 0.18s;
+    margin-bottom: 12px;
+  }
+
+  .btn-cta:hover { background: var(--tl-d); }
+
+  .cta-note {
+    font-size: 13px;
+    color: var(--mg);
+    text-align: center;
+  }
+
+  .divider {
+    height: 1px;
+    background: rgba(255,255,255,0.06);
+    margin: 28px 0;
+  }
+
+  .benchmark-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .benchmark-label {
+    font-size: 13px;
+    color: var(--mg);
+    flex: 1;
+  }
+
+  .benchmark-bar-wrap {
+    flex: 2;
+    height: 6px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 3px;
+    overflow: hidden;
+    margin: 0 12px;
+  }
+
+  .benchmark-bar {
+    height: 100%;
+    border-radius: 3px;
+  }
+
+  .benchmark-bar.you { background: var(--tl); }
+  .benchmark-bar.them { background: rgba(255,107,107,0.6); }
+
+  .benchmark-pct {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: #fff;
+    width: 32px;
+    text-align: right;
+  }
+
+  .footer-line {
+    font-size: 12px;
+    color: rgba(255,255,255,0.25);
+    text-align: center;
+    margin-top: 32px;
+    font-family: var(--mono);
+  }
+
+  /* ---- HIDDEN ---- */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* ---- RESPONSIVE ---- */
+  @media (max-width: 520px) {
+    .card, .gate-card, .results-card { padding: 28px 20px; }
+    body { padding: 24px 12px 60px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ======== INTRO SCREEN ======== -->
+<div id="intro" class="screen active">
+  <div class="brand">MDB Growth Capital — Demand Gen Scorecard</div>
+  <h1 class="page-title">Is your demand engine built to compound — or just spend?</h1>
+  <p class="page-sub">8 questions. 90 seconds. You get a scored readiness audit and a personalised infrastructure gap map at the end.</p>
+
+  <div class="card" style="text-align:center;">
+    <div class="q-label">What this covers</div>
+    <p style="font-size:15px;color:var(--mg);margin-bottom:28px;line-height:1.6;">Most demand gen teams run three systems in parallel — paid acquisition, organic content, and trial activation — without the infrastructure that connects them. This scorecard finds where the compounding stops.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:32px;text-align:left;">
+      <div style="padding:14px;background:rgba(0,195,154,0.06);border-radius:6px;border:1px solid rgba(0,195,154,0.15);">
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:1px;color:var(--tl);text-transform:uppercase;margin-bottom:6px;">Covered</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.8);line-height:1.6;">GEO presence · Attribution depth · Trial activation · Content cluster architecture · Paid efficiency · Enterprise pipeline quality</div>
+      </div>
+      <div style="padding:14px;background:rgba(255,255,255,0.03);border-radius:6px;border:1px solid rgba(255,255,255,0.08);">
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:1px;color:var(--mg);text-transform:uppercase;margin-bottom:6px;">Benchmarked against</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.8);line-height:1.6;">B2B SaaS companies at the same ARR stage with active paid budgets — not generic benchmarks</div>
+      </div>
+    </div>
+
+    <button class="btn-results" onclick="startQuiz()" style="max-width:280px;margin:0 auto;display:block;">Start scorecard →</button>
+    <p style="font-size:12px;color:rgba(255,255,255,0.3);margin-top:12px;">No spam. Results sent only if you request them.</p>
+  </div>
+</div>
+
+<!-- ======== QUIZ SCREEN ======== -->
+<div id="quiz" class="screen">
+  <div class="brand">MDB Growth Capital — Demand Gen Scorecard</div>
+  <h1 class="page-title" style="font-size:22px;margin-bottom:4px;">Demand Gen Infrastructure Check</h1>
+  <p class="page-sub" style="margin-bottom:24px;">Answer honestly. The gap map is only useful if it reflects reality.</p>
+
+  <div class="progress-wrap">
+    <div class="progress-meta">
+      <span id="q-counter">Question 1 of 8</span>
+      <span id="q-pct">0% complete</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <div class="card" id="question-card">
+    <div class="q-label" id="q-label">Question 1</div>
+    <div class="q-text" id="q-text"></div>
+    <div class="q-context" id="q-context"></div>
+    <div class="options" id="options-wrap"></div>
+
+    <div class="nav-row">
+      <button class="btn-back" id="btn-back" onclick="prevQ()" style="visibility:hidden;">← Back</button>
+      <button class="btn-next" id="btn-next" onclick="nextQ()">Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ======== EMAIL GATE ======== -->
+<div id="gate" class="screen">
+  <div class="gate-card">
+    <div class="gate-eyebrow">Almost there</div>
+    <h2 class="gate-title">Your scorecard is ready.</h2>
+    <p class="gate-body">Enter your name and work email to see your infrastructure score, gap map, and the three highest-leverage actions for your specific situation.</p>
+
+    <div class="form-row">
+      <input class="form-input" type="text" id="fname" placeholder="First name" />
+      <input class="form-input" type="email" id="femail" placeholder="Work email" />
+      <input class="form-input" type="text" id="fcompany" placeholder="Company" />
+      <button class="btn-results" onclick="showResults()">Show my score →</button>
+    </div>
+    <p class="gate-privacy">Your details are shared only with Jean Mundabi Fala at MDB Growth Capital. No third-party lists.</p>
+  </div>
+</div>
+
+<!-- ======== RESULTS SCREEN ======== -->
+<div id="results" class="screen">
+  <div class="brand">MDB Growth Capital — Demand Gen Scorecard</div>
+
+  <div class="results-card">
+    <div class="score-ring" id="score-ring">
+      <div class="score-number" id="score-num">0</div>
+      <div class="score-denom">/ 100</div>
+    </div>
+
+    <div class="tier-label" id="tier-label"></div>
+    <h2 class="results-title" id="results-title"></h2>
+    <p class="results-sub" id="results-sub"></p>
+
+    <!-- Benchmark comparison -->
+    <div style="margin-bottom:28px;">
+      <div style="font-family:var(--mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--mg);margin-bottom:14px;">How you compare</div>
+      <div class="benchmark-row">
+        <span class="benchmark-label">GEO Presence</span>
+        <div class="benchmark-bar-wrap"><div class="benchmark-bar you" id="bm-geo" style="width:0%"></div></div>
+        <span class="benchmark-pct" id="bm-geo-pct">–</span>
+      </div>
+      <div class="benchmark-row">
+        <span class="benchmark-label">Attribution Depth</span>
+        <div class="benchmark-bar-wrap"><div class="benchmark-bar you" id="bm-attr" style="width:0%"></div></div>
+        <span class="benchmark-pct" id="bm-attr-pct">–</span>
+      </div>
+      <div class="benchmark-row">
+        <span class="benchmark-label">Trial Activation</span>
+        <div class="benchmark-bar-wrap"><div class="benchmark-bar you" id="bm-trial" style="width:0%"></div></div>
+        <span class="benchmark-pct" id="bm-trial-pct">–</span>
+      </div>
+      <div class="benchmark-row">
+        <span class="benchmark-label">Content Architecture</span>
+        <div class="benchmark-bar-wrap"><div class="benchmark-bar you" id="bm-content" style="width:0%"></div></div>
+        <span class="benchmark-pct" id="bm-content-pct">–</span>
+      </div>
+      <div class="benchmark-row" style="margin-bottom:0;">
+        <span class="benchmark-label">Pipeline Quality</span>
+        <div class="benchmark-bar-wrap"><div class="benchmark-bar you" id="bm-pipe" style="width:0%"></div></div>
+        <span class="benchmark-pct" id="bm-pipe-pct">–</span>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Gap findings -->
+    <div style="font-family:var(--mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--mg);margin-bottom:14px;">Your infrastructure gaps</div>
+    <div class="findings-grid" id="findings-grid">
+      <!-- injected by JS -->
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Offer -->
+    <div class="offer-block">
+      <div class="offer-label">Free deliverable — no obligation</div>
+      <div class="offer-title">GEO Readiness Audit + Infrastructure Gap Map</div>
+      <ul class="offer-items">
+        <li>20-query matrix: where your brand appears vs. where Articulate appears in ChatGPT, Perplexity, and Gemini</li>
+        <li>3 priority content cluster briefs — each built to earn AI search mentions within 90 days</li>
+        <li>Attribution baseline: what your current stack can and cannot attribute, and what to build first</li>
+        <li>Trial activation sequence blueprint — 7-step milestone-triggered email series mapped to your trial flow</li>
+        <li>Revenue gap estimate based on your scorecard answers and public ARR data</li>
+      </ul>
+      <a class="btn-cta" href="https://cal.com/jean-m-8f4kbr/15min" target="_blank" rel="noopener">Book 30 minutes — get the full audit →</a>
+      <p class="cta-note">Jean walks you through the audit live. If the infrastructure gap is real and the scope fits, he proposes Sprint 1. If not, the audit is yours to keep.</p>
+    </div>
+
+    <div style="font-size:14px;color:var(--mg);line-height:1.6;margin-bottom:16px;">
+      <strong style="color:#fff;">The window is 2026.</strong> The brand that establishes content cluster authority in AI search this year holds that position for five years. Articulate is building it now. The question is whether you build it first or buy traffic from the category winner.
+    </div>
+
+    <div class="footer-line">Strategy and GTM research by Jean Mundabi Fala · MDB Growth Capital</div>
+  </div>
+</div>
+
+<script>
+const questions = [
+  {
+    id: 'geo',
+    label: 'Question 1 — GEO Presence',
+    text: 'When a prospect asks an AI tool "best e-learning authoring tool for large enterprises," where does your brand appear?',
+    context: 'Enterprise buyers are running these queries before they open Google. Generative Engine Optimisation (GEO) is now the first layer of demand capture — not search ads, not SEO.',
+    options: [
+      { text: 'First or second mention, consistently', sub: 'We appear in most relevant AI search results for our category', score: 10 },
+      { text: 'Sometimes — inconsistent across platforms', sub: 'We appear in some results but not reliably', score: 6 },
+      { text: 'Rarely or never', sub: 'Our brand is largely absent from AI-generated answers', score: 2 },
+      { text: "We haven't tested this", sub: "We don't know where we appear in AI search", score: 0 }
+    ],
+    dimension: 'geo'
+  },
+  {
+    id: 'attribution',
+    label: 'Question 2 — Attribution Depth',
+    text: 'Can you trace a paid click to a closed contract — by campaign, channel, and buyer segment?',
+    context: 'Surface-level attribution shows clicks and signups. Deal-stage attribution shows which campaigns actually produce revenue. Most teams have one but not the other.',
+    options: [
+      { text: 'Yes — click to contract, by segment', sub: 'We can see which campaigns produce which deals at which contract values', score: 10 },
+      { text: 'Partial — click to trial signup', sub: 'We track signups but lose visibility after the trial starts', score: 5 },
+      { text: 'Click volume only', sub: 'We can see cost per click and signup count, but not downstream pipeline', score: 2 },
+      { text: 'Attribution is a known gap', sub: "We're working on it but don't have clean data today", score: 0 }
+    ],
+    dimension: 'attr'
+  },
+  {
+    id: 'activation',
+    label: 'Question 3 — Trial Activation',
+    text: 'What is your structured response when a free trial user has not reached your core activation milestone within 72 hours?',
+    context: 'For most B2B SaaS tools, users who do not complete the core action within 72 hours convert at less than half the rate of those who do. The 72-hour window is the highest-leverage moment in the funnel.',
+    options: [
+      { text: 'Milestone-triggered sequence', sub: 'Automated emails or in-app nudges fire when users hit or miss specific milestones', score: 10 },
+      { text: 'Time-based drip only', sub: "We have onboarding emails but they're not triggered by activation signals", score: 5 },
+      { text: 'Manual follow-up by a human', sub: 'Sales or CS reach out, but it is not automated or scalable', score: 3 },
+      { text: 'No structured response', sub: 'Trial users who do not self-activate are not proactively re-engaged', score: 0 }
+    ],
+    dimension: 'trial'
+  },
+  {
+    id: 'content',
+    label: 'Question 4 — Content Architecture',
+    text: 'Do you have published content clusters specifically designed to earn AI search mentions for your category's highest-intent queries?',
+    context: 'A content cluster is a hub article plus supporting articles covering every buyer intent stage for a specific topic. The architecture — not individual articles — earns AI search citations.',
+    options: [
+      { text: 'Yes — multiple clusters, mapped to buyer intent', sub: 'We publish structured clusters with hub and spoke architecture for key categories', score: 10 },
+      { text: 'Partial — articles exist but not clustered', sub: 'We have strong individual articles but not systematic cluster architecture', score: 5 },
+      { text: 'Blog exists, no cluster strategy', sub: 'We publish regularly but without a GEO or cluster framework', score: 2 },
+      { text: 'No structured content strategy', sub: 'Content is ad hoc or mostly product-led', score: 0 }
+    ],
+    dimension: 'content'
+  },
+  {
+    id: 'paid',
+    label: 'Question 5 — Paid Spend Efficiency',
+    text: 'How do you currently allocate your paid acquisition budget between individual trial signups and enterprise demo bookings?',
+    context: 'Individual signups and enterprise demo bookings often look similar at the click level but produce completely different contract values. Budget allocation without deal-stage data defaults to optimising for volume, not revenue.',
+    options: [
+      { text: 'Allocation driven by deal-stage data', sub: 'We weight spend toward segments that produce enterprise contracts, based on attribution data', score: 10 },
+      { text: 'Allocation based on cost per trial signup', sub: 'We optimise for signup volume and cost efficiency, but not downstream contract value', score: 4 },
+      { text: 'Split equally or by channel capacity', sub: 'Budget allocation is not driven by conversion-to-revenue data', score: 2 },
+      { text: "We're not sure — allocation is hard to track", sub: 'We lack visibility into which spend produces which outcomes', score: 0 }
+    ],
+    dimension: 'attr'
+  },
+  {
+    id: 'pipeline',
+    label: 'Question 6 — Enterprise Pipeline Quality',
+    text: 'When you present marketing-sourced pipeline to leadership, how confident are you in the numbers?',
+    context: 'The difference between "we generated 400 leads this quarter" and "we generated €2.3M in sourced pipeline at 28% close rate" is the difference between a cost centre and a revenue function.',
+    options: [
+      { text: 'High confidence — pipeline tied to deal stage and contract value', sub: 'We can show marketing-sourced pipeline with close rates and ACV by segment', score: 10 },
+      { text: 'Moderate — MQL volume with estimated conversion rates', sub: 'We have lead volume data and apply assumed conversion rates to estimate pipeline', score: 5 },
+      { text: 'Low — we report clicks and signups', sub: 'Our reporting stops at top-of-funnel activity metrics', score: 2 },
+      { text: "We don't present pipeline — it's not attributable", sub: 'Pipeline attribution is an acknowledged gap in our current reporting', score: 0 }
+    ],
+    dimension: 'pipe'
+  },
+  {
+    id: 'competitive',
+    label: 'Question 7 — Competitive Positioning in AI Search',
+    text: 'Have you tested which queries your main competitor appears in for AI-generated answers — and compared it to where you appear?',
+    context: 'The gap between where you appear and where your direct competitor appears in AI search is the GEO gap. Knowing the gap is the first step to closing it.',
+    options: [
+      { text: 'Yes — we have a query matrix and monitor it', sub: 'We regularly track AI search presence across ChatGPT, Perplexity, and Gemini', score: 10 },
+      { text: 'We have tested a few queries informally', sub: "We've checked some queries but don't have a systematic view", score: 4 },
+      { text: "We haven't compared — we only track our own mentions", sub: 'We monitor our brand in AI search but not the competitive gap', score: 2 },
+      { text: "We haven't tested this at all", sub: "AI search presence is not something we currently track", score: 0 }
+    ],
+    dimension: 'geo'
+  },
+  {
+    id: 'internal',
+    label: 'Question 8 — Internal Champion Infrastructure',
+    text: 'When an enterprise trial user wants to advocate for your product internally, what do you give them to make the case to their procurement team?',
+    context: 'Enterprise deals rarely close on the first evaluator alone. Internal champions need materials to sell the product upward — ROI data, comparisons, risk mitigations — without requiring a follow-up call from your team.',
+    options: [
+      { text: 'A full internal champion kit', sub: 'ROI brief, comparison document, risk mitigation one-pager — ready to forward without us involved', score: 10 },
+      { text: 'Case studies and pricing page', sub: 'We point them to existing materials but nothing purpose-built for internal selling', score: 5 },
+      { text: 'We jump on a call with the champion', sub: 'Our team gets involved to help them make the case — not scalable', score: 3 },
+      { text: 'Nothing structured', sub: 'Champions are on their own when selling internally', score: 0 }
+    ],
+    dimension: 'pipe'
+  }
+];
+
+let current = 0;
+let answers = {};
+let scores = {};
+
+function startQuiz() {
+  document.getElementById('intro').classList.remove('active');
+  document.getElementById('quiz').classList.add('active');
+  renderQ(0);
+}
+
+function renderQ(idx) {
+  const q = questions[idx];
+  document.getElementById('q-label').textContent = q.label;
+  document.getElementById('q-text').textContent = q.text;
+  document.getElementById('q-context').textContent = q.context;
+  document.getElementById('q-counter').textContent = `Question ${idx + 1} of ${questions.length}`;
+  document.getElementById('q-pct').textContent = `${Math.round((idx / questions.length) * 100)}% complete`;
+  document.getElementById('progress-fill').style.width = `${(idx / questions.length) * 100}%`;
+
+  const wrap = document.getElementById('options-wrap');
+  wrap.innerHTML = '';
+
+  q.options.forEach((opt, oi) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt' + (answers[q.id] === oi ? ' selected' : '');
+    btn.innerHTML = `
+      <div class="opt-radio"></div>
+      <div class="opt-body">
+        <div class="opt-title">${opt.text}</div>
+        ${opt.sub ? `<div class="opt-sub">${opt.sub}</div>` : ''}
+      </div>
+    `;
+    btn.onclick = () => selectOpt(q.id, oi, q.options[oi].score, q.dimension);
+    wrap.appendChild(btn);
+  });
+
+  const nextBtn = document.getElementById('btn-next');
+  if (answers[q.id] !== undefined) {
+    nextBtn.classList.add('active');
+  } else {
+    nextBtn.classList.remove('active');
+  }
+
+  nextBtn.textContent = idx === questions.length - 1 ? 'See my results →' : 'Next →';
+  document.getElementById('btn-back').style.visibility = idx === 0 ? 'hidden' : 'visible';
+}
+
+function selectOpt(qid, optIdx, score, dimension) {
+  answers[qid] = optIdx;
+  if (!scores[dimension]) scores[dimension] = [];
+  scores[dimension].push(score);
+
+  // update visuals
+  document.querySelectorAll('.opt').forEach((el, i) => {
+    el.classList.toggle('selected', i === optIdx);
+  });
+  document.getElementById('btn-next').classList.add('active');
+}
+
+function nextQ() {
+  if (answers[questions[current].id] === undefined) return;
+  current++;
+  if (current >= questions.length) {
+    showGate();
+  } else {
+    renderQ(current);
+  }
+}
+
+function prevQ() {
+  if (current > 0) {
+    current--;
+    renderQ(current);
+  }
+}
+
+function showGate() {
+  document.getElementById('quiz').classList.remove('active');
+  document.getElementById('gate').classList.add('active');
+}
+
+function showResults() {
+  const name = document.getElementById('fname').value.trim();
+  const email = document.getElementById('femail').value.trim();
+  const company = document.getElementById('fcompany').value.trim();
+
+  if (!name || !email) {
+    alert('Please enter your name and email to see your results.');
+    return;
+  }
+
+  // Calculate total score
+  let total = 0;
+  questions.forEach(q => {
+    const ansIdx = answers[q.id];
+    if (ansIdx !== undefined) {
+      total += q.options[ansIdx].score;
+    }
+  });
+  const maxPossible = questions.length * 10;
+  const pct = Math.round((total / maxPossible) * 100);
+
+  // Calculate dimension scores
+  const dims = { geo: [], attr: [], trial: [], content: [], pipe: [] };
+  questions.forEach(q => {
+    const ansIdx = answers[q.id];
+    if (ansIdx !== undefined) {
+      if (!dims[q.dimension]) dims[q.dimension] = [];
+      dims[q.dimension].push(q.options[ansIdx].score);
+    }
+  });
+
+  const avg = arr => arr.length ? Math.round(arr.reduce((a,b)=>a+b,0)/arr.length*10) : 0;
+
+  const geoScore = avg(dims.geo);
+  const attrScore = avg(dims.attr);
+  const trialScore = avg(answers['activation'] !== undefined ? [questions[2].options[answers['activation']].score] : []);
+  const contentScore = avg(answers['content'] !== undefined ? [questions[3].options[answers['content']].score] : []);
+  const pipeScore = avg(dims.pipe);
+
+  // Tier
+  let tier, tierClass, title, sub;
+  if (pct <= 30) {
+    tier = 'Infrastructure Gap';
+    tierClass = 'low';
+    title = 'Significant infrastructure gaps across all three layers';
+    sub = `${name}, your demand engine has the spend but not the infrastructure to compound it. GEO, attribution, and trial activation all show critical gaps — each one is a leak. The combined opportunity is likely €1M to €2.5M in accessible ARR from infrastructure improvements alone.`;
+  } else if (pct <= 55) {
+    tier = 'Foundation Stage';
+    tierClass = 'mid';
+    title = 'Basics in place. The compounding layer is missing.';
+    sub = `${name}, you have a functional demand engine but it is not yet compounding. Paid acquisition is working but attribution is not deep enough to optimise it. AI search is an undefended gap. The infrastructure that turns a functional engine into a compounding one is the missing piece.`;
+  } else if (pct <= 75) {
+    tier = 'Building Momentum';
+    tierClass = 'mid';
+    title = 'Solid foundation. GEO and attribution are the next unlock.';
+    sub = `${name}, your core funnel is performing. The next phase of growth comes from compounding organic acquisition through GEO content clusters and tightening attribution to optimise paid spend at the deal-stage level. Both are buildable within 90 days.`;
+  } else {
+    tier = 'Scaling Phase';
+    tierClass = 'high';
+    title = 'Strong foundation. Refining the compounding edge.';
+    sub = `${name}, your demand infrastructure is well-built. The marginal gain comes from GEO cluster depth and internal champion infrastructure — the two areas where most teams at your stage leave enterprise pipeline on the table.`;
+  }
+
+  // Render results
+  document.getElementById('gate').classList.remove('active');
+  document.getElementById('results').classList.add('active');
+
+  const ring = document.getElementById('score-ring');
+  ring.className = 'score-ring ' + tierClass;
+  document.getElementById('score-num').textContent = pct;
+
+  const tl = document.getElementById('tier-label');
+  tl.textContent = tier;
+  tl.className = 'tier-label ' + tierClass;
+
+  document.getElementById('results-title').textContent = title;
+  document.getElementById('results-sub').textContent = sub;
+
+  // Benchmarks
+  setBar('bm-geo', geoScore);
+  setBar('bm-attr', attrScore);
+  setBar('bm-trial', trialScore);
+  setBar('bm-content', contentScore);
+  setBar('bm-pipe', pipeScore);
+
+  // Gap findings
+  const findings = buildFindings(answers, name, company);
+  const grid = document.getElementById('findings-grid');
+  grid.innerHTML = '';
+  findings.forEach(f => {
+    const div = document.createElement('div');
+    div.className = 'finding-row ' + f.type;
+    div.innerHTML = `
+      <div class="finding-icon">${f.icon}</div>
+      <div class="finding-text">
+        <div class="finding-label">${f.label}</div>
+        ${f.text}
+      </div>
+    `;
+    grid.appendChild(div);
+  });
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function setBar(id, score) {
+  const el = document.getElementById(id);
+  const pctEl = document.getElementById(id + '-pct');
+  const pct = score;
+  el.style.width = pct + '%';
+  pctEl.textContent = pct + '%';
+}
+
+function buildFindings(ans, name, company) {
+  const findings = [];
+  const co = company || 'your company';
+
+  // GEO
+  const geoAns = ans['geo'];
+  if (geoAns === 3) {
+    findings.push({ type: 'gap', icon: '⚠', label: 'Critical Gap — GEO Presence', text: `${co} has not tested AI search presence. Enterprise buyers read ChatGPT answers before they open Google. The brands that appear in those answers capture the first frame. Entering the window late costs six to twelve months of compounding.` });
+  } else if (geoAns === 2) {
+    findings.push({ type: 'gap', icon: '⚠', label: 'Significant Gap — GEO Presence', text: `${co} rarely appears in AI-generated answers for its category. Articulate 360 appears in the majority of high-intent enterprise queries. Every month without a content cluster strategy is a month of compounding that accrues to the category leader.` });
+  } else if (geoAns === 1) {
+    findings.push({ type: 'risk', icon: '→', label: 'Risk — Inconsistent GEO Presence', text: `Inconsistent AI search presence is not a neutral position — it means the narrative is being written by whoever is more consistent. A cluster architecture resolves this within 90 days.` });
+  } else {
+    findings.push({ type: 'ok', icon: '✓', label: 'Strong — GEO Presence', text: `${co} appears consistently in AI search. The next step is deepening cluster architecture so the position compounds rather than staying static.` });
+  }
+
+  // Attribution
+  const attrAns = ans['attribution'];
+  if (attrAns >= 2) {
+    findings.push({ type: 'gap', icon: '⚠', label: 'Critical Gap — Attribution Depth', text: `Without deal-stage attribution, every budget decision is a guess. At €1M+ in annual paid spend, the difference between a good and poor allocation — based on which campaigns actually produce enterprise contracts — is likely €200K to €400K in reallocatable budget.` });
+  } else if (attrAns === 1) {
+    findings.push({ type: 'risk', icon: '→', label: 'Partial — Attribution Depth', text: `Click-to-signup attribution is a start. The missing layer is click-to-contract by buyer segment. Four weeks to build. Permanent value.` });
+  } else {
+    findings.push({ type: 'ok', icon: '✓', label: 'Strong — Attribution Depth', text: `Deal-stage attribution is in place. Ensure it is being used to actively reallocate paid budget toward highest-ACV segments on a rolling basis.` });
+  }
+
+  // Trial activation
+  const actAns = ans['activation'];
+  if (actAns === 3) {
+    findings.push({ type: 'gap', icon: '⚠', label: 'Critical Gap — Trial Activation', text: `No structured activation response means trial users who do not self-activate are lost silently. For a product with a 14-day free trial, the first 72 hours determine whether the product becomes a habit or an abandoned account. A 7-step milestone-triggered sequence can lift trial-to-paid conversion by 15 to 25 percentage points.` });
+  } else if (actAns === 2) {
+    findings.push({ type: 'risk', icon: '→', label: 'Partial — Trial Activation', text: `Manual follow-up does not scale. Once trial volume exceeds 500 per month, CS bandwidth becomes the bottleneck. Automating the activation sequence frees CS for enterprise deals only.` });
+  } else if (actAns === 1) {
+    findings.push({ type: 'risk', icon: '→', label: 'Partial — Trial Activation', text: `Time-based drip onboarding misses users who are stuck, not just slow. Milestone-triggered sequences respond to actual user behaviour and close 2x more trials at the same volume.` });
+  } else {
+    findings.push({ type: 'ok', icon: '✓', label: 'Strong — Trial Activation', text: `Milestone-triggered sequences are the gold standard. Ensure the "first published course shared with a learner" milestone is tracked as the primary activation event.` });
+  }
+
+  // Competitive
+  const compAns = ans['competitive'];
+  if (compAns >= 2) {
+    findings.push({ type: 'gap', icon: '⚠', label: 'Gap — Competitive GEO Tracking', text: `Without a query matrix, you are navigating AI search blind. The competitive gap may be larger than assumed — or there may be underdefended queries where a single content cluster takes a dominant position quickly.` });
+  } else {
+    findings.push({ type: 'ok', icon: '✓', label: 'Active — Competitive GEO Tracking', text: `Tracking the competitive GEO gap is the right foundation. The next step is a systematic content cluster for each high-opportunity query where the gap is widest.` });
+  }
+
+  // Internal champion
+  const champAns = ans['internal'];
+  if (champAns >= 2) {
+    findings.push({ type: 'risk', icon: '→', label: 'Risk — Internal Champion Infrastructure', text: `Enterprise deals fail in committee, not in the demo. Without a champion kit, your internal advocate is making the case without the right materials — and losing deals to procurement friction that a one-page ROI brief could resolve.` });
+  }
+
+  return findings.slice(0, 5);
+}
+</script>
+</body>
+</html>

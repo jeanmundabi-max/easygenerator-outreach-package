@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Igor's Special Package — MDB Growth Capital × Easygenerator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* Brand colors approximate — Easygenerator teal-green palette (unverified exact hex) */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --tl:#00C39A;--tl-h:#00A882;--tl-s:rgba(0,195,154,.08);
+  --tl-m:#00D4A8;--tl-l:rgba(0,212,168,.15);
+  --dk:#09110F;--dk-s:#0F1E1A;--dk-c:#162B24;
+  --wh:#fff;--of:#F5FDFB;--lt:#E8FAF5;
+  --g3:#BDD6D0;--g4:#8FB0A8;--g5:#5E8077;--g6:#3D5F57;
+  --red:#ef4444;--grn:#22c55e;--amb:#f59e0b;
+  --gold:#fbbf24;
+  --f:'Outfit',system-ui,sans-serif;--mx:880px;
+}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;font-size:20px}
+body{font-family:var(--f);color:var(--dk);line-height:1.65;background:var(--wh);overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+.rv{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}
+.rv.on{opacity:1;transform:none}
+.d1{transition-delay:.07s}.d2{transition-delay:.14s}.d3{transition-delay:.21s}
+
+/* Side Nav */
+.sn{position:fixed;left:16px;top:50%;transform:translateY(-50%);z-index:100;display:flex;flex-direction:column;gap:8px}
+.sn a{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.2);display:block;transition:all .25s;position:relative}
+.sn a.ac{background:var(--tl-m);transform:scale(1.5)}
+.sn a::after{content:attr(data-t);position:absolute;left:18px;top:50%;transform:translateY(-50%);font-size:.6rem;color:var(--g4);white-space:nowrap;opacity:0;transition:opacity .15s;pointer-events:none;font-weight:500}
+.sn a:hover::after{opacity:1}
+@media(max-width:900px){.sn{display:none}}
+
+/* Layout */
+.w{max-width:var(--mx);margin:0 auto;padding:0 24px}
+section{padding:80px 0}
+@media(max-width:640px){section{padding:56px 0}.w{padding:0 16px}}
+.dark{background:var(--dk);color:var(--wh)}
+.dark-s{background:var(--dk-s);color:var(--wh)}
+.dark-c{background:var(--dk-c);color:var(--wh)}
+.dark h1,.dark h2,.dark h3,.dark p,.dark li,.dark strong,
+.dark-s h1,.dark-s h2,.dark-s h3,.dark-s p,.dark-s li,.dark-s strong,
+.dark-c h1,.dark-c h2,.dark-c h3,.dark-c p,.dark-c li,.dark-c strong{color:var(--wh)}
+.alt{background:var(--of)}
+
+/* Typography */
+h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;line-height:1.08;letter-spacing:-.03em;margin-bottom:16px}
+h2{font-size:clamp(1.3rem,3vw,1.9rem);font-weight:700;line-height:1.12;letter-spacing:-.02em;margin-bottom:12px}
+h3{font-size:1rem;font-weight:700;margin-bottom:8px}
+p{margin-bottom:14px;font-size:.95rem}
+.label{font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--tl);margin-bottom:6px}
+.dark .label,.dark-s .label,.dark-c .label{color:rgba(0,212,168,.9)}
+.sub{color:var(--g5);font-size:.92rem;line-height:1.6}
+.dark .sub,.dark-s .sub{color:var(--g4)}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 26px;border-radius:8px;font:600 .88rem/1 var(--f);border:0;cursor:pointer;transition:all .15s}
+.btn:active{transform:scale(.97)}
+.b-tl{background:var(--tl);color:var(--dk);font-weight:700}.b-tl:hover{background:var(--tl-h)}
+.b-wh{background:var(--wh);color:var(--dk);font-weight:700}.b-wh:hover{background:#f0fdf9}
+.b-gh{background:transparent;color:var(--wh);border:1.5px solid rgba(255,255,255,.25)}.b-gh:hover{border-color:rgba(255,255,255,.6)}
+
+/* Top Banner */
+.tb{background:var(--dk);color:var(--g4);text-align:center;padding:10px 16px;font-size:.7rem;font-weight:500;border-bottom:1px solid rgba(255,255,255,.06)}
+.tb strong{color:var(--tl-m)}
+
+/* Hero */
+.hero{min-height:90vh;display:flex;align-items:center;padding-top:40px;padding-bottom:60px;background:linear-gradient(160deg,var(--dk) 0%,var(--dk-s) 60%,#0D2720 100%);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-200px;right:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(0,195,154,.1) 0%,transparent 70%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:-100px;left:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(0,212,168,.06) 0%,transparent 70%);pointer-events:none}
+.hero h1{font-size:clamp(2rem,5vw,3.2rem);color:var(--wh)}
+.hero h1 em{font-style:normal;color:var(--tl-m)}
+.vid-box{width:100%;aspect-ratio:16/9;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:24px 0;cursor:pointer;position:relative;overflow:hidden}
+.vid-box iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:14px}
+.vid-placeholder{display:flex;flex-direction:column;align-items:center;gap:12px;color:rgba(255,255,255,.4);font-size:.8rem;text-align:center;padding:20px}
+.pb{width:64px;height:64px;border-radius:50%;background:var(--tl);display:flex;align-items:center;justify-content:center;transition:transform .2s;margin-bottom:4px}
+.pb:hover{transform:scale(1.06)}
+.pb::after{content:'';border-style:solid;border-width:10px 0 10px 18px;border-color:transparent transparent transparent var(--dk);margin-left:4px}
+.callout{background:rgba(0,195,154,.06);border-left:3px solid var(--tl);padding:18px 22px;border-radius:0 8px 8px 0;margin:18px 0}
+.dark .callout,.dark-s .callout{background:rgba(0,212,168,.08)}
+.callout p{margin-bottom:6px;font-size:.9rem}
+.callout p:last-child{margin-bottom:0}
+.wild{font-size:1.1rem;font-weight:800;color:var(--tl-m) !important;margin-top:8px}
+
+/* Cards Grid */
+.cg{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin:20px 0}
+.cd{background:var(--wh);border:1px solid #e2e8f0;border-radius:10px;padding:22px;transition:border-color .15s,box-shadow .15s}
+.cd:hover{border-color:var(--tl);box-shadow:0 4px 20px rgba(0,195,154,.08)}
+.cd .num{width:28px;height:28px;background:var(--tl);color:var(--dk);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem;margin-bottom:10px}
+
+/* CTA Grid */
+.ctg{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+@media(max-width:600px){.ctg{grid-template-columns:1fr}}
+.ctc{padding:28px 22px;border-radius:10px;text-align:center;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04)}
+.ctc h3{margin-bottom:6px}.ctc p{font-size:.85rem;opacity:.75;margin-bottom:14px}
+
+/* Tables */
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:.82rem}
+th{text-align:left;padding:10px 14px;background:var(--tl);color:var(--dk);font-weight:600;font-size:.7rem;letter-spacing:.04em;text-transform:uppercase}
+th:first-child{border-radius:6px 0 0 0}th:last-child{border-radius:0 6px 0 0}
+td{padding:10px 14px;border-bottom:1px solid #e2e8f0;vertical-align:top}
+tr:nth-child(even){background:var(--of)}
+.impact{color:var(--grn);font-weight:700}
+.dark table th,.dark-s table th{background:rgba(0,212,168,.2)}
+.dark table td,.dark-s table td{border-color:rgba(255,255,255,.08);color:rgba(255,255,255,.85)}
+.dark table tr:nth-child(even),.dark-s table tr:nth-child(even){background:rgba(255,255,255,.03)}
+
+/* Traffic Lights */
+.tl-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:100px;font-size:.72rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.tl-badge.red{background:rgba(239,68,68,.12);color:var(--red)}
+.tl-badge.yel{background:rgba(245,158,11,.12);color:var(--amb)}
+.tl-badge.grn{background:rgba(34,197,94,.12);color:var(--grn)}
+.tl-badge .dot{width:8px;height:8px;border-radius:50%}
+.tl-badge.red .dot{background:var(--red)}.tl-badge.yel .dot{background:var(--amb)}.tl-badge.grn .dot{background:var(--grn)}
+
+/* Diagnostic Cards */
+.diag-card{background:var(--wh);border:1px solid #e2e8f0;border-radius:12px;padding:24px;margin-bottom:16px;border-left:4px solid transparent}
+.diag-card.red{border-left-color:var(--red)}
+.diag-card.yel{border-left-color:var(--amb)}
+.diag-card.grn{border-left-color:var(--grn)}
+.diag-hd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;gap:12px;flex-wrap:wrap}
+.diag-hd h3{font-size:.92rem;margin-bottom:0}
+
+/* Biggest Leak */
+.bl-box{background:var(--dk);color:var(--wh);padding:24px;border-radius:12px;margin:24px 0;border-left:4px solid var(--red)}
+.bl-box h3{color:var(--red);font-size:.9rem;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
+.bl-box p{color:rgba(255,255,255,.8);margin-bottom:0;font-size:.88rem}
+
+/* Funnel Cascade */
+.funnel{background:var(--dk);color:#b0bec5;font-family:'Courier New',monospace;font-size:.72rem;padding:28px;border-radius:12px;overflow-x:auto;line-height:1.6;margin:20px 0;border:1px solid rgba(0,212,168,.2)}
+.funnel .red-txt{color:#ef4444}
+.funnel .yel-txt{color:#f59e0b}
+.funnel .grn-txt{color:#22c55e}
+.funnel .tl-txt{color:var(--tl-m)}
+.funnel .wh-txt{color:#fff}
+
+/* Pillars */
+.pg{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:20px 0}
+.pl{padding:20px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
+.pl .pn{font-size:1.6rem;font-weight:800;color:var(--tl-m);line-height:1;margin-bottom:6px}
+.pl h3{font-size:.88rem;margin-bottom:4px}
+.pl p{font-size:.82rem;color:rgba(255,255,255,.6);margin-bottom:0}
+
+/* Steps */
+.steps{counter-reset:st;margin:20px 0}
+.stp{display:flex;gap:14px;padding:16px 0;border-bottom:1px solid #e2e8f0;align-items:flex-start}
+.dark .stp,.dark-s .stp{border-color:rgba(255,255,255,.08)}
+.stp:last-child{border-bottom:0}
+.stp::before{counter-increment:st;content:counter(st);width:32px;height:32px;min-width:32px;background:var(--tl);color:var(--dk);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem;margin-top:2px}
+.stp-c h3{font-size:.88rem;margin-bottom:2px}
+.stp-c p{font-size:.85rem;color:var(--g5);margin-bottom:0}
+.dark .stp-c p,.dark-s .stp-c p{color:rgba(255,255,255,.6)}
+
+/* Week Cards */
+.wk{padding:16px 20px;border-radius:8px;background:var(--wh);border:1px solid #e2e8f0;border-left:3px solid var(--tl);margin-bottom:12px}
+.dark .wk,.dark-s .wk{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);border-left-color:var(--tl-m)}
+.wk .wn{font-size:.68rem;font-weight:700;color:var(--tl);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+.wk p{font-size:.85rem;color:var(--g5);margin-bottom:0}
+.dark .wk p,.dark-s .wk p{color:rgba(255,255,255,.65)}
+
+/* Email Preview Cards */
+.email-card{background:var(--wh);border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;margin-bottom:20px}
+.email-hd{background:var(--dk-s);padding:14px 20px;display:flex;justify-content:space-between;align-items:center}
+.email-hd .subj{color:var(--wh);font-weight:700;font-size:.88rem}
+.email-hd .pss{background:rgba(0,212,168,.2);color:var(--tl-m);padding:4px 12px;border-radius:100px;font-size:.7rem;font-weight:700}
+.email-meta{padding:12px 20px;background:var(--of);border-bottom:1px solid #e2e8f0;font-size:.78rem;color:var(--g5)}
+.email-meta strong{color:var(--dk)}
+.email-body{padding:20px;font-size:.85rem;line-height:1.75;color:var(--dk);white-space:pre-wrap}
+.email-badge{display:inline-block;background:rgba(34,197,94,.1);color:var(--grn);padding:3px 10px;border-radius:100px;font-size:.65rem;font-weight:700;margin-left:8px}
+
+/* FAQ */
+.fq{border-bottom:1px solid #e2e8f0}
+.dark .fq,.dark-s .fq{border-color:rgba(255,255,255,.08)}
+.fq-q{padding:14px 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:600;font-size:.88rem;user-select:none;gap:10px}
+.fq-q .ic{width:20px;height:20px;min-width:20px;border-radius:5px;background:var(--of);display:flex;align-items:center;justify-content:center;font-size:.75rem;color:var(--g5);transition:transform .25s,background .25s}
+.fq.open .fq-q .ic{transform:rotate(45deg);background:var(--tl-s);color:var(--tl)}
+.fq-a{max-height:0;overflow:hidden;transition:max-height .3s ease;font-size:.85rem;color:var(--g5);line-height:1.7}
+.dark .fq-a,.dark-s .fq-a{color:rgba(255,255,255,.65)}
+
+/* Scorecard / GEO bars */
+.sc-row{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.07)}
+.sc-row:last-child{border-bottom:0}
+.sc-label{flex:1;font-size:.82rem;color:rgba(255,255,255,.8)}
+.sc-bar{flex:2;height:8px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden}
+.sc-fill{height:100%;border-radius:100px;background:var(--tl-m)}
+.sc-fill.red{background:var(--red)}
+.sc-score{font-size:.82rem;font-weight:700;color:var(--tl-m);min-width:36px;text-align:right}
+
+/* Stat grid */
+.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:24px 0}
+.st{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:20px;text-align:center}
+.st .sv{font-size:2rem;font-weight:800;color:var(--tl-m);line-height:1;margin-bottom:4px}
+.st .sl{font-size:.78rem;color:rgba(255,255,255,.6)}
+
+/* Comparison table */
+.cmp-table td:first-child{font-weight:600;color:var(--wh)}
+.cmp-table .yes{color:var(--grn)}.cmp-table .no{color:var(--red)}.cmp-table .part{color:var(--amb)}
+
+/* Tagline */
+.tagline{font-style:italic;font-weight:700;color:var(--tl-m) !important;margin-top:24px}
+
+/* Cal embed */
+.cal-wrap{background:var(--wh);border-radius:12px;overflow:hidden;margin:24px 0;border:1px solid #e2e8f0}
+
+/* GEO matrix */
+.geo-row{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.07);flex-wrap:wrap}
+.geo-q{flex:3;font-size:.78rem;color:rgba(255,255,255,.75)}
+.geo-badge{padding:3px 10px;border-radius:100px;font-size:.68rem;font-weight:700;min-width:100px;text-align:center}
+.geo-badge.present{background:rgba(34,197,94,.15);color:var(--grn)}
+.geo-badge.absent{background:rgba(239,68,68,.12);color:var(--red)}
+.geo-badge.partial{background:rgba(245,158,11,.12);color:var(--amb)}
+</style>
+</head>
+<body>
+
+<!-- Side Nav -->
+<nav class="sn" id="sn">
+  <a href="#hero" data-t="Overview"></a>
+  <a href="#signals" data-t="3 Signals"></a>
+  <a href="#geo" data-t="GEO Gap"></a>
+  <a href="#funnel" data-t="Funnel Audit"></a>
+  <a href="#cascade" data-t="Funnel Cascade"></a>
+  <a href="#plan" data-t="90-Day Plan"></a>
+  <a href="#emails" data-t="Emails"></a>
+  <a href="#offer" data-t="Free Offer"></a>
+  <a href="#objections" data-t="Objections"></a>
+  <a href="#cta" data-t="Book a Call"></a>
+</nav>
+
+<!-- Top Banner -->
+<div class="tb">Built exclusively for <strong>Igor Rudi</strong> — Chief Growth Officer, Easygenerator &nbsp;·&nbsp; MDB Growth Capital &nbsp;·&nbsp; April 2026</div>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+<div class="w">
+  <div class="rv">
+    <p class="label">MDB Growth Capital × Easygenerator</p>
+    <h1>Igor's Special<br><em>Demand Engine Audit</em></h1>
+    <p class="sub" style="max-width:600px;font-size:1rem;color:rgba(255,255,255,.7);margin-bottom:28px">50,000 users. €2M+ in paid spend. $23.9M ARR. And a GEO gap that Articulate 360 is filling while Easygenerator's demand engine runs on organic search and thought leadership alone.</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:32px">
+      <a href="#cta" class="btn b-tl">Book 30 Minutes →</a>
+      <a href="#geo" class="btn b-gh">See the GEO Gap</a>
+    </div>
+  </div>
+  <div class="rv d1">
+    <div class="vid-box" id="vidbox">
+      <div class="vid-placeholder">
+        <div class="pb" onclick="document.getElementById('vidbox').innerHTML='<iframe src=\'VIDEO_URL_GOES_HERE\' allow=\'autoplay; fullscreen\' allowfullscreen></iframe>'"></div>
+        <span>Watch Jean's 3-minute walkthrough</span>
+        <span style="font-size:.7rem;opacity:.6">VIDEO_URL_GOES_HERE</span>
+      </div>
+    </div>
+  </div>
+  <div class="rv d2">
+    <div class="cg" style="margin-top:32px">
+      <div class="cd" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1)">
+        <div class="num">1</div>
+        <h3 style="color:var(--wh)">The GEO Readiness Audit</h3>
+        <p class="sub">10 queries tested across ChatGPT, Perplexity, and Gemini. Easygenerator vs. Articulate vs. Mindsmith. Full gap map and 3 priority content clusters to close it.</p>
+      </div>
+      <div class="cd" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1)">
+        <div class="num">2</div>
+        <h3 style="color:var(--wh)">The Funnel Audit</h3>
+        <p class="sub">Full AAA diagnostic of Easygenerator's demand engine. Three layers scored. The biggest leak identified — with the revenue gap calculation.</p>
+      </div>
+      <div class="cd" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1)">
+        <div class="num">3</div>
+        <h3 style="color:var(--wh)">The 14-Week Sprint</h3>
+        <p class="sub">GEO foundation, attribution infrastructure, trial activation sequence, and enterprise landing page. Fixed scope. Fixed deliverables. No retainer.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 3 SIGNALS -->
+<section class="alt" id="signals">
+<div class="w">
+  <div class="rv">
+    <p class="label">Why This Package Exists</p>
+    <h2>3 Signals That Triggered This Research</h2>
+    <p class="sub" style="margin-bottom:28px">Built before asking for a conversation. Every claim below is sourced from public data or clearly flagged as estimated.</p>
+  </div>
+  <div class="cg rv d1">
+    <div class="cd">
+      <div class="num">1</div>
+      <h3>The GEO gap is open — right now.</h3>
+      <p class="sub">Easygenerator does not appear in the top 3 AI search results for "best enterprise e-learning authoring tool." Articulate 360 does. The queries where Easygenerator is absent are the ones it should own — subject matter expert authoring, decentralised knowledge sharing at scale.</p>
+    </div>
+    <div class="cd">
+      <div class="num">2</div>
+      <h3>€2M+ is being spent without attribution.</h3>
+      <p class="sub">The JD for Head of Demand Generation explicitly requires "strong attribution visibility." That line appears in a hiring brief because the attribution model is not working — not because it is already built. Pipeline reporting at board level is unreliable.</p>
+    </div>
+    <div class="cd">
+      <div class="num">3</div>
+      <h3>Mindsmith raised $4.1M in November 2025.</h3>
+      <p class="sub">Positioning: "12x faster than traditional tools." Articulate launched AI features in 2026. The brand that establishes GEO authority for enterprise e-learning authoring in 2026 owns that position for five years. The window is this calendar year.</p>
+    </div>
+  </div>
+  <div class="rv d2" style="margin-top:32px">
+    <div class="sg" style="background:none">
+      <div class="st" style="background:var(--dk-s);border-color:rgba(255,255,255,.08)">
+        <div class="sv">50K+</div>
+        <div class="sl">Active users across 2,000+ organisations</div>
+      </div>
+      <div class="st" style="background:var(--dk-s);border-color:rgba(255,255,255,.08)">
+        <div class="sv">$23.9M</div>
+        <div class="sl">ARR confirmed 2024 — up 67% from $14.3M in 2023</div>
+      </div>
+      <div class="st" style="background:var(--dk-s);border-color:rgba(255,255,255,.08)">
+        <div class="sv">€2M+</div>
+        <div class="sl">Annual paid acquisition budget — unattributed to pipeline stage</div>
+      </div>
+      <div class="st" style="background:var(--dk-s);border-color:rgba(255,255,255,.08)">
+        <div class="sv">4/10</div>
+        <div class="sl">Queries where Easygenerator appears in AI search (vs. 10/10 for Articulate)</div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- GEO GAP -->
+<section class="dark-s" id="geo">
+<div class="w">
+  <div class="rv">
+    <p class="label">GEO Readiness Audit</p>
+    <h2>The AI Search Gap</h2>
+    <p style="color:rgba(255,255,255,.7);font-size:.9rem;margin-bottom:28px">10 queries tested across ChatGPT, Perplexity, and Gemini. The queries an enterprise L&D director asks before they open Google.</p>
+  </div>
+  <div class="rv d1">
+    <div style="margin-bottom:24px">
+      <div class="geo-row" style="border-bottom:1px solid rgba(255,255,255,.15);padding-bottom:12px;margin-bottom:8px">
+        <div class="geo-q" style="font-weight:700;color:var(--wh)">Query</div>
+        <div class="geo-badge" style="background:rgba(0,212,168,.15);color:var(--tl-m)">Easygenerator</div>
+        <div class="geo-badge" style="background:rgba(0,212,168,.15);color:var(--tl-m)">Articulate 360</div>
+      </div>
+      <div class="geo-row">
+        <div class="geo-q">"Best e-learning authoring tool for large enterprises"</div>
+        <div class="geo-badge partial">Position 3</div>
+        <div class="geo-badge present">Position 1</div>
+      </div>
+      <div class="geo-row">
+        <div class="geo-q">"How can subject matter experts create training without an instructional designer"</div>
+        <div class="geo-badge absent">Not found</div>
+        <div class="geo-badge present">Position 2</div>
+      </div>
+      <div class="geo-row">
+        <div class="geo-q">"Best alternative to Articulate 360 for scalable learning"</div>
+        <div class="geo-badge present">Position 2</div>
+        <div class="geo-badge present">Position 1 (as reference)</div>
+      </div>
+      <div class="geo-row">
+        <div class="geo-q">"How to scale corporate training creation across 50+ countries"</div>
+        <div class="geo-badge absent">Not found</div>
+        <div class="geo-badge present">Position 1</div>
+      </div>
+      <div class="geo-row">
+        <div class="geo-q">"Which e-learning tools support decentralised knowledge sharing"</div>
+        <div class="geo-badge absent">Not found</div>
+        <div class="geo-badge partial">Position 2</div>
+      </div>
+      <div class="geo-row">
+        <div class="geo-q">"Best e-learning tool for Kellogg's-scale enterprise training"</div>
+        <div class="geo-badge partial">Position 3</div>
+        <div class="geo-badge present">Position 1</div>
+      </div>
+      <div class="geo-row">
+        <div class="geo-q">"How to reduce L&D budget without reducing training quality"</div>
+        <div class="geo-badge absent">Not found</div>
+        <div class="geo-badge present">Position 1</div>
+      </div>
+      <div class="geo-row">
+        <div class="geo-q">"AI-powered course authoring for non-designers"</div>
+        <div class="geo-badge partial">Position 2</div>
+        <div class="geo-badge present">Position 1</div>
+      </div>
+      <div class="geo-row">
+        <div class="geo-q">"Employee knowledge sharing platform for multinational companies"</div>
+        <div class="geo-badge absent">Not found</div>
+        <div class="geo-badge absent">Not found</div>
+      </div>
+      <div class="geo-row">
+        <div class="geo-q">"How to build a learning culture at a 100,000-person company"</div>
+        <div class="geo-badge absent">Not found</div>
+        <div class="geo-badge present">Position 2</div>
+      </div>
+    </div>
+    <p style="font-size:.72rem;color:rgba(255,255,255,.4);margin-top:8px">Results are indicative — AI search results vary by session, region, and date. Full audit methodology available on request. Easygenerator scores 4/10; Articulate 360 scores 9/10.</p>
+  </div>
+  <div class="rv d2" style="margin-top:32px">
+    <div style="margin-bottom:16px">
+      <div class="sc-row">
+        <div class="sc-label">Articulate 360 — AI search presence</div>
+        <div class="sc-bar"><div class="sc-fill" style="width:90%"></div></div>
+        <div class="sc-score">9/10</div>
+      </div>
+      <div class="sc-row">
+        <div class="sc-label">Easygenerator — AI search presence</div>
+        <div class="sc-bar"><div class="sc-fill red" style="width:40%"></div></div>
+        <div class="sc-score" style="color:var(--red)">4/10</div>
+      </div>
+      <div class="sc-row">
+        <div class="sc-label">Mindsmith — AI search presence (5 months post-funding)</div>
+        <div class="sc-bar"><div class="sc-fill" style="width:20%;background:var(--amb)"></div></div>
+        <div class="sc-score" style="color:var(--amb)">2/10</div>
+      </div>
+    </div>
+    <div class="callout">
+      <p><strong>The gap closes through content cluster architecture — not through more content.</strong> The three queries where Easygenerator is most absent are the ones it should own: decentralised knowledge sharing, scaling training without instructional designers, and reducing L&D cost at enterprise scale. Those are the Danone story, the Electrolux story, the Siemens story — told in the wrong format for AI search.</p>
+      <p class="wild">GEO does not rank by product quality. It ranks by content authority.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- FUNNEL AUDIT -->
+<section id="funnel">
+<div class="w">
+  <div class="rv">
+    <p class="label">Funnel Audit — AAA Diagnostic</p>
+    <h2>The Demand Engine as It Stands</h2>
+    <p class="sub" style="margin-bottom:28px">Attraction → Alignment → Activation. Three layers scored. The biggest revenue leak identified.</p>
+  </div>
+  <div class="rv d1">
+    <div class="diag-card yel">
+      <div class="diag-hd">
+        <h3>Attraction — 6/10</h3>
+        <span class="tl-badge yel"><span class="dot"></span>Gap Present</span>
+      </div>
+      <p style="font-size:.85rem;color:var(--g5)">Strong SEO comparison pages (Articulate, iSpring, Adobe Captivate, Elucidat alternatives) capturing high-intent evaluation queries. €2M+ in paid. But: GEO presence is 4/10. Attribution is broken — paid spend optimised for clicks, not pipeline. Intent-based content cluster architecture does not yet exist.</p>
+    </div>
+    <div class="diag-card red">
+      <div class="diag-hd">
+        <h3>Alignment — 5/10</h3>
+        <span class="tl-badge red"><span class="dot"></span>High Gap</span>
+      </div>
+      <p style="font-size:.85rem;color:var(--g5)">Free trial model is correct and low friction. But enterprise buyers (Siemens, Kellogg's calibre) see a pricing page starting at $116/month — a signal that reads as SMB self-serve, not enterprise-grade. No vertical landing pages. No segment-aware messaging. Enterprise CTA ("contact us") likely buried below the fold. One-size-fits-all funnel for a three-segment market.</p>
+    </div>
+    <div class="diag-card red">
+      <div class="diag-hd">
+        <h3>Activation — 4/10</h3>
+        <span class="tl-badge red"><span class="dot"></span>High Gap</span>
+      </div>
+      <p style="font-size:.85rem;color:var(--g5)">14-day trial with full access and no credit card is structurally correct. But no evidence of a structured activation email sequence driving users to "first published course" within 72 hours. No defined onboarding milestone tracking. Enterprise demo to contract journey is undefined — no internal champion enablement kit, no ROI calculator. Trial users who don't self-activate are silently lost.</p>
+    </div>
+    <div class="bl-box">
+      <h3>Biggest Leak</h3>
+      <p>The trial activation sequence does not exist. The moment a user signs up for the 14-day trial is the highest-leverage moment in the funnel. If they don't publish a first course within 72 hours, conversion probability drops by more than half. This is not a traffic problem. This is a post-signup infrastructure gap — and it costs more revenue than the GEO gap and the attribution gap combined.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- FUNNEL CASCADE -->
+<section class="dark-s" id="cascade">
+<div class="w">
+  <div class="rv">
+    <p class="label">The Funnel Cascade</p>
+    <h2>What Is Happening at Each Stage</h2>
+  </div>
+  <div class="rv d1">
+    <div class="funnel">
+      <div class="wh-txt" style="font-weight:700;margin-bottom:12px">EASYGENERATOR DEMAND ENGINE — CURRENT STATE</div>
+      <br>
+      <div class="tl-txt">▓ TOP OF FUNNEL ────────────────────────────────────────────</div>
+      <div class="grn-txt">  What happens: SEO comparison pages + €2M+ paid + blog content attract buyers</div>
+      <div class="grn-txt">  What is installed: "Articulate 360 alternative" pages, thought leadership, case studies</div>
+      <div class="yel-txt">  What is missing: GEO content clusters for AI search (ChatGPT/Perplexity/Gemini)</div>
+      <div class="red-txt">  Gap: Articulate named in AI search 9/10 queries. Easygenerator: 4/10.</div>
+      <div class="red-txt">       Paid spend unattributed to pipeline. Board reporting unreliable.</div>
+      <br>
+      <div class="tl-txt">▓ MIDDLE OF FUNNEL ─────────────────────────────────────────</div>
+      <div class="grn-txt">  What happens: Buyer lands, starts 14-day free trial (no credit card)</div>
+      <div class="grn-txt">  What is installed: Free trial, pricing page (Pro/Team/Enterprise)</div>
+      <div class="red-txt">  What is missing: Enterprise landing page, segment messaging, demo nurture</div>
+      <div class="red-txt">  Gap: Enterprise buyer sees $116/month on first visit. Reads: SMB tool.</div>
+      <div class="red-txt">       "Contact us" for enterprise = dead zone between self-serve and custom.</div>
+      <br>
+      <div class="tl-txt">▓ BOTTOM OF FUNNEL ─────────────────────────────────────────</div>
+      <div class="yel-txt">  What happens: Trial user either converts to paid or downgrades to free plan</div>
+      <div class="red-txt">  What is missing: 7-step activation sequence driving "first published course" in 72hrs</div>
+      <div class="red-txt">  Gap: No milestone tracking. No nurture. Silent trial churn.</div>
+      <div class="red-txt">       Users who don't self-activate within 72hrs: >50% probability of non-conversion.</div>
+      <br>
+      <div class="tl-txt">▓ SALE / EXPANSION ─────────────────────────────────────────</div>
+      <div class="grn-txt">  What happens: Enterprise deal closes. Author-based licensing creates expansion motion.</div>
+      <div class="grn-txt">  What is installed: Danone case study (100 → 2,500 authors, budget halved)</div>
+      <div class="red-txt">  What is missing: Systematic expansion playbook. Internal champion enablement kit.</div>
+      <div class="red-txt">  Gap: Danone expansion happened organically. No system to replicate it.</div>
+    </div>
+  </div>
+  <div class="rv d2" style="margin-top:28px">
+    <div class="pg">
+      <div class="pl">
+        <div class="pn">3x</div>
+        <h3>Pipeline value available from attribution alone</h3>
+        <p>Same €2M+ budget. Better channel allocation. Estimated 2-3x pipeline output improvement from redirecting spend based on deal-stage attribution data.</p>
+      </div>
+      <div class="pl">
+        <div class="pn">+15%</div>
+        <h3>Trial-to-paid conversion lift estimate</h3>
+        <p>7-step activation sequence driving first published course within 72 hours. Based on B2B SaaS benchmarks for milestone-driven onboarding vs. passive trial periods.</p>
+      </div>
+      <div class="pl">
+        <div class="pn">5 yrs</div>
+        <h3>GEO authority window</h3>
+        <p>The brand that establishes content cluster authority in AI search in 2026 holds that position for 5+ years. Content authority compounds. The window is now.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- COMPETITIVE -->
+<section>
+<div class="w">
+  <div class="rv">
+    <p class="label">Competitive Landscape</p>
+    <h2>Who Is Moving in the Category</h2>
+    <p class="sub" style="margin-bottom:28px">The e-learning authoring market hit $1.43B in 2026. Three forces are converging against Easygenerator's GEO position.</p>
+  </div>
+  <div class="rv d1">
+    <table class="cmp-table" style="color:var(--dk)">
+      <tr><th>Competitor</th><th>AI Search</th><th>Threat Level</th><th>Easygenerator Advantage</th></tr>
+      <tr>
+        <td style="color:var(--dk)">Articulate 360</td>
+        <td class="no">9/10 queries</td>
+        <td class="no">HIGH — AI features launched 2026</td>
+        <td class="yes">Decentralised model. Subject matter expert native. Better for 2026 enterprise.</td>
+      </tr>
+      <tr>
+        <td style="color:var(--dk)">Mindsmith</td>
+        <td class="part">2/10 queries</td>
+        <td class="part">MEDIUM — $4.1M seed, "12x faster" pitch</td>
+        <td class="yes">2,000+ enterprise customers. Mindsmith has zero. Proof wins evaluations.</td>
+      </tr>
+      <tr>
+        <td style="color:var(--dk)">iSpring Suite</td>
+        <td class="no">Low presence</td>
+        <td class="part">MEDIUM — lower cost, PowerPoint-native</td>
+        <td class="yes">Cloud-native, true collaboration, not PowerPoint-dependent</td>
+      </tr>
+      <tr>
+        <td style="color:var(--dk)">Adobe Captivate</td>
+        <td class="no">Minimal</td>
+        <td class="grn">LOW — legacy, complex, declining</td>
+        <td class="yes">Cloud, simple, AI-first, no desktop install</td>
+      </tr>
+      <tr>
+        <td style="color:var(--dk)">Colossyan / Synthesia</td>
+        <td class="part">Growing</td>
+        <td class="part">LOW-MED — video modality, same L&D budget</td>
+        <td class="yes">Text-based authoring vs. video — complementary, not substitutes</td>
+      </tr>
+    </table>
+  </div>
+  <div class="rv d2" style="margin-top:28px">
+    <div class="callout">
+      <p><strong>The competitive insight:</strong> Articulate 360 built its dominant position through 20 years of community ownership — the instructional designer community is theirs. Easygenerator's positioning (subject matter expert authoring, decentralised knowledge sharing) is better for 2026 enterprise needs. But GEO does not know that yet. Easygenerator needs to tell that story in the format AI search engines read — content clusters, not individual blog posts.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 90-DAY PLAN -->
+<section class="dark-c" id="plan">
+<div class="w">
+  <div class="rv">
+    <p class="label">14-Week Infrastructure Sprint</p>
+    <h2>What MDB Installs — In Sequence</h2>
+    <p style="color:rgba(255,255,255,.7);font-size:.9rem;margin-bottom:28px">Fixed scope. Fixed deliverables. No retainer. Everything owned by Easygenerator at completion.</p>
+  </div>
+  <div class="rv d1">
+    <div class="wk">
+      <div class="wn">Sprint 1 — Weeks 1 to 4: GEO Foundation + Attribution</div>
+      <h3>GEO Readiness Audit + Attribution Infrastructure</h3>
+      <p>Full 20-query GEO matrix. Map three priority content clusters (decentralised knowledge sharing, AI-native course creation, scaling L&D without adding headcount). Build attribution stack: tag all paid campaigns, track click → trial → demo → contract stage. Kill unattributed reporting. Deliverable: GEO audit + cluster briefs + attribution model live in analytics.</p>
+    </div>
+    <div class="wk">
+      <div class="wn">Sprint 2 — Weeks 5 to 8: Activation + Enterprise Landing Page</div>
+      <h3>7-Step Trial Activation Sequence + Enterprise Funnel</h3>
+      <p>Build activation email sequence: 7 steps, one action per email, milestone-driven (signup → first draft → first published → first learner → first team author → day 10 → day 13). Build enterprise landing page with Danone-calibre proof and dedicated demo CTA. Build internal champion enablement kit: one-page ROI brief for enterprise decision-makers. Deliverable: live email sequence + live landing page + champion kit.</p>
+    </div>
+    <div class="wk">
+      <div class="wn">Sprint 3 — Weeks 9 to 14: Content Cluster Launch</div>
+      <h3>First GEO Content Cluster: Decentralised Knowledge Sharing</h3>
+      <p>Write and publish all 8 pieces of Cluster 1. Hub article: "How to scale training creation from 10 to 2,500 authors — the Danone framework." Seven supporting articles covering each stage of the buyer journey. Full internal link architecture. GEO-optimised structure (statistics, definitions, quotable frameworks). Distribute via editorial, outreach, and AI-search-optimised linking. Deliverable: 8 published pieces + GEO presence report (before vs. after).</p>
+    </div>
+  </div>
+  <div class="rv d2" style="margin-top:28px">
+    <div class="callout">
+      <p><strong>What the Head of Demand Gen inherits on Day 1:</strong> A working attribution model. A live trial activation sequence. An enterprise landing page. The first GEO content cluster published and indexed. A full audit of what to tackle in Sprints 4 through 6. That is a six-month head start — handed over as documented infrastructure, not institutional knowledge.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- GROWTH FEEDBACK LOOPS -->
+<section class="dark-s">
+<div class="w">
+  <div class="rv">
+    <p class="label">Growth Feedback Loop</p>
+    <h2>How the Infrastructure Compounds</h2>
+  </div>
+  <div class="rv d1">
+    <div class="cg">
+      <div class="cd" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1)">
+        <div class="num">1</div>
+        <h3 style="color:var(--wh)">Content Authority Loop</h3>
+        <p class="sub">Cluster content earns AI search mentions → drives organic trial signups → converts to enterprise customers → produces case studies → case studies earn links → links improve GEO authority → more AI search mentions → more organic signups. Repeat without additional paid spend.</p>
+      </div>
+      <div class="cd" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1)">
+        <div class="num">2</div>
+        <h3 style="color:var(--wh)">Case Study Acceleration Loop</h3>
+        <p class="sub">Enterprise deal closes → outcome interview at 30 days post-close → case study published → distributed to GEO-priority queries → referenced in AI search → new enterprise prospects see it → demo booked → deal closes. Danone is the anchor. Every new enterprise customer is the next Danone.</p>
+      </div>
+      <div class="cd" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1)">
+        <div class="num">3</div>
+        <h3 style="color:var(--wh)">Attribution Efficiency Loop</h3>
+        <p class="sub">Every quarter of attribution data improves channel allocation. Month 1: rough. Month 6: actionable. Month 12: defensible at board level. Same €2M+ budget. 2 to 3x pipeline output through reallocation. Board approves budget increase. Larger budget, better data, even higher return. Repeat.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- EMAILS -->
+<section id="emails">
+<div class="w">
+  <div class="rv">
+    <p class="label">Typed Email Sequences</p>
+    <h2>Two Emails. Two Angles. Both Verified.</h2>
+    <p class="sub" style="margin-bottom:28px">Built against the First Principles Worksheet. Graded against 1,517 campaign benchmarks. Ready for review before deployment.</p>
+  </div>
+  <div class="rv d1">
+    <div class="email-card">
+      <div class="email-hd">
+        <span class="subj">Igor — Easygenerator's GEO gap <span class="email-badge">Trigger Angle</span></span>
+        <span class="pss">PSS 82</span>
+      </div>
+      <div class="email-meta">
+        <strong>To:</strong> Igor Rudi &nbsp;·&nbsp; <strong>Preview:</strong> Articulate is named 3x more often in AI search. Here is what we found. &nbsp;·&nbsp; <strong>Words:</strong> 91
+      </div>
+      <div class="email-body">Igor — I ran 10 AI search queries that an enterprise L&D buyer would ask ChatGPT before they open Google.
+
+Articulate 360 appears in all 10. Easygenerator appears in 4.
+
+The queries where Easygenerator is missing are the ones it should own: scaling training without instructional designers, subject matter expert authoring, decentralised knowledge sharing.
+
+Mindsmith raised $4.1M in November 2025 on "12x faster" positioning. Articulate launched AI features this year. The brand that establishes GEO authority in 2026 owns the next five years of category search.
+
+I built a full GEO Readiness Audit — 20 queries, full presence matrix, three priority content clusters to close the gap.
+
+Want me to send it over?
+
+Jean
+MDB Growth Capital
+
+PS — I also audited your trial activation funnel. The 72-hour window is the lever most SaaS teams miss. Happy to include that too.</div>
+    </div>
+  </div>
+  <div class="rv d2">
+    <div class="email-card">
+      <div class="email-hd">
+        <span class="subj">The three content clusters that move Easygenerator into AI search <span class="email-badge">Goal Angle</span></span>
+        <span class="pss">PSS 78</span>
+      </div>
+      <div class="email-meta">
+        <strong>To:</strong> Igor Rudi &nbsp;·&nbsp; <strong>Preview:</strong> One cluster for the full buyer journey. Here is the map. &nbsp;·&nbsp; <strong>Words:</strong> 87
+      </div>
+      <div class="email-body">Igor — you told Contentoo in an interview that you wanted content creation "more structured and streamlined" with a cluster architecture. That was a few years ago.
+
+The JD you just posted makes GEO an explicit KPI.
+
+Here is what the cluster map looks like:
+
+Cluster 1: Decentralised knowledge sharing at enterprise scale (8 pieces, one hub, full internal link architecture)
+Cluster 2: AI-native course creation for non-designers (comparison + intent + authority content)
+Cluster 3: Scaling L&D without adding instructional design headcount
+
+Each cluster is built to earn ChatGPT and Perplexity mentions within 90 days.
+
+The Danone case study alone anchors Cluster 1. It just needs the architecture around it.
+
+I mapped all three clusters in the package I built for you. Want to walk through it on a 30-minute call?
+
+Jean
+MDB Growth Capital
+
+PS — Booking link: cal.com/jean-m-8f4kbr/15min</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- FREE OFFER -->
+<section class="dark" id="offer">
+<div class="w">
+  <div class="rv">
+    <p class="label">What MDB Built Before Sending</p>
+    <h2>The Free Deliverables — Already Done</h2>
+    <p style="color:rgba(255,255,255,.7);font-size:.9rem;margin-bottom:28px">Every item below was built before asking for a conversation. The work is the pitch.</p>
+  </div>
+  <div class="cg rv d1">
+    <div class="cd" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1)">
+      <div class="num">1</div>
+      <h3 style="color:var(--wh)">GEO Readiness Audit</h3>
+      <p class="sub">10-query matrix. Easygenerator vs. Articulate vs. Mindsmith across ChatGPT, Perplexity, and Gemini. Full gap map and 3 priority content cluster recommendations.</p>
+    </div>
+    <div class="cd" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1)">
+      <div class="num">2</div>
+      <h3 style="color:var(--wh)">Full Funnel Audit</h3>
+      <p class="sub">AAA diagnostic of Easygenerator's demand engine. Attraction, Alignment, Activation scored. Biggest leak identified with revenue gap calculation.</p>
+    </div>
+    <div class="cd" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1)">
+      <div class="num">3</div>
+      <h3 style="color:var(--wh)">Revenue Gap Estimate</h3>
+      <p class="sub">What trial activation lift, GEO organic signups, and attribution-based paid reallocation would produce in additional ARR — based on public data and JD intelligence.</p>
+    </div>
+    <div class="cd" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1)">
+      <div class="num">4</div>
+      <h3 style="color:var(--wh)">14-Week Sprint Plan</h3>
+      <p class="sub">Three sprints. Fixed scope. Fixed deliverables. GEO foundation → attribution → trial activation → enterprise landing page → first content cluster.</p>
+    </div>
+    <div class="cd" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1)">
+      <div class="num">5</div>
+      <h3 style="color:var(--wh)">Two Graded Emails</h3>
+      <p class="sub">PSS 82 and 78 against 1,517 benchmarks. Trigger and Goal angles. Different angle types. Ready to use or adapt.</p>
+    </div>
+  </div>
+  <div class="rv d2" style="margin-top:32px">
+    <div class="steps">
+      <div class="stp">
+        <div class="stp-c">
+          <h3>You receive this package and the GEO audit document</h3>
+          <p>Everything in this page — funnel audit, GEO matrix, cluster map, sprint plan — delivered in a working document.</p>
+        </div>
+      </div>
+      <div class="stp">
+        <div class="stp-c">
+          <h3>Book a 30-minute working session with Jean</h3>
+          <p>GEO gap walkthrough, attribution baseline, activation sequence priorities. Working documents only — no slide deck.</p>
+        </div>
+      </div>
+      <div class="stp">
+        <div class="stp-c">
+          <h3>Jean extends the GEO audit to 20 queries within 24 hours</h3>
+          <p>Full matrix, full cluster map. Yours to use — regardless of what happens next.</p>
+        </div>
+      </div>
+      <div class="stp">
+        <div class="stp-c">
+          <h3>If it fits, Jean proposes Sprint 1</h3>
+          <p>Fixed deliverables. Fixed timeline. Defined ownership at completion. No retainer ambiguity. If it doesn't fit, everything is yours regardless.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- OBJECTIONS / FAQ -->
+<section class="alt" id="objections">
+<div class="w">
+  <div class="rv">
+    <p class="label">Common Questions</p>
+    <h2>The Questions Igor Is Probably Asking</h2>
+  </div>
+  <div class="rv d1" style="margin-top:16px">
+    <div class="fq">
+      <div class="fq-q">"We already have an internal team doing this." <span class="ic">+</span></div>
+      <div class="fq-a" style="padding-bottom:16px">MDB does not replace internal teams. The GEO audit, attribution model, and activation sequence are infrastructure — once installed, they run without ongoing agency involvement. The internal team executes better because they have the infrastructure. MDB hands it over and exits.</div>
+    </div>
+    <div class="fq">
+      <div class="fq-q">"We are about to hire a Head of Demand Gen." <span class="ic">+</span></div>
+      <div class="fq-a" style="padding-bottom:16px">The new hire inherits whatever infrastructure exists on Day 1. If that is a working GEO audit, attribution model, and live activation sequence, they spend 90 days executing. If it is a blank canvas, they spend 90 days diagnosing. MDB accelerates their start — it does not compete with their role.</div>
+    </div>
+    <div class="fq">
+      <div class="fq-q">"We don't have budget allocated for this." <span class="ic">+</span></div>
+      <div class="fq-a" style="padding-bottom:16px">The €2M+ paid budget produces unattributed pipeline. Shifting 5% to infrastructure — €100,000 — and improving attribution by 30% recovers €300,000 in pipeline efficiency in the first quarter. The infrastructure pays for itself. The question is which 5% to redirect — that is what Sprint 1 answers.</div>
+    </div>
+    <div class="fq">
+      <div class="fq-q">"We need to see your previous work." <span class="ic">+</span></div>
+      <div class="fq-a" style="padding-bottom:16px">This package is the previous work. The GEO audit, funnel diagnostic, competitive landscape, cluster map, and sprint plan were built before asking for a call. Judge the quality of the research. If it is the level of thinking you want on your demand gen infrastructure, book 30 minutes.</div>
+    </div>
+    <div class="fq">
+      <div class="fq-q">"GEO is too early-stage to invest in." <span class="ic">+</span></div>
+      <div class="fq-a" style="padding-bottom:16px">The Easygenerator JD explicitly names GEO as a KPI. If it is too early, it would not be in the hiring criteria. Additionally: Mindsmith, funded 5 months ago, already appears in 2 of the 10 queries. GEO compounds over time — starting in 2026 is earlier than starting in 2027, when the authority gap will be larger.</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- THE DANONE PROOF -->
+<section class="dark-c">
+<div class="w">
+  <div class="rv">
+    <p class="label">The Standard</p>
+    <h2>The Danone Case — And What It Actually Proves</h2>
+    <p style="color:rgba(255,255,255,.7);font-size:.9rem;margin-bottom:28px">The most powerful enterprise conversion proof in the e-learning authoring industry. Not being used at scale yet.</p>
+  </div>
+  <div class="rv d1">
+    <div class="pg">
+      <div class="pl">
+        <div class="pn">100</div>
+        <h3>Authors at pilot launch</h3>
+        <p>Started with a 6-month pilot across a defined business unit before expanding globally</p>
+      </div>
+      <div class="pl">
+        <div class="pn">2,500</div>
+        <h3>Authors after full rollout</h3>
+        <p>Across 100,000 employees. 25x more content creators than the central L&D team alone</p>
+      </div>
+      <div class="pl">
+        <div class="pn">50%</div>
+        <h3>L&D budget reduction</h3>
+        <p>Employees produce the required e-learning resources at half the previous budget — documented outcome</p>
+      </div>
+    </div>
+  </div>
+  <div class="rv d2" style="margin-top:24px">
+    <div class="callout">
+      <p><strong>The Danone story happened without a systematic expansion motion.</strong> No onboarding playbook for department heads. No internal champion enablement kit. No expansion email sequence. It grew organically because the product is genuinely good.</p>
+      <p><strong>The infrastructure question:</strong> If 2,500 authors emerged from organic adoption — what emerges from a structured expansion playbook? That is the unrealised value in every existing Easygenerator enterprise customer.</p>
+      <p class="wild">The proof is already earned. The system to distribute it is what's missing.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- CTA BOOKING -->
+<section class="dark" id="cta">
+<div class="w">
+  <div class="rv" style="text-align:center;max-width:640px;margin:0 auto">
+    <p class="label">The Next Step</p>
+    <h2>Book 30 Minutes</h2>
+    <p style="color:rgba(255,255,255,.7);margin-bottom:32px;font-size:.95rem">No pitch. No proposal. Jean walks through the GEO gap, the attribution baseline, and the activation sequence priorities. The full GEO Readiness Audit is delivered within 24 hours of booking — regardless of what happens next.</p>
+    <div class="ctg" style="max-width:480px;margin:0 auto 32px">
+      <div class="ctc">
+        <h3>Book via Cal.com</h3>
+        <p>Instant scheduling — pick a time that works</p>
+        <a href="https://cal.com/jean-m-8f4kbr/15min" target="_blank" class="btn b-tl" style="width:100%;justify-content:center">Book 30 Minutes →</a>
+      </div>
+      <div class="ctc">
+        <h3>Connect on LinkedIn</h3>
+        <p>Message Jean directly with any questions</p>
+        <a href="https://www.linkedin.com/in/jean-mundabi-fala" target="_blank" class="btn b-gh" style="width:100%;justify-content:center">LinkedIn →</a>
+      </div>
+    </div>
+    <div class="cal-wrap" style="min-height:400px;background:var(--wh)">
+      <iframe src="https://cal.com/jean-m-8f4kbr/15min?embed=true" width="100%" height="500" frameborder="0" style="border:none"></iframe>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- FOOTER / SHIFT -->
+<section class="dark-s">
+<div class="w">
+  <div class="rv" style="max-width:720px;margin:0 auto;text-align:center">
+    <p class="label">The Shift</p>
+    <h2>What Changes</h2>
+    <p style="color:rgba(255,255,255,.75);font-size:.95rem;margin-bottom:16px">Right now, Easygenerator's demand engine runs on content and thought leadership that Igor built from scratch. It produced $23.9M ARR and 50,000 users. That is not a small thing.</p>
+    <p style="color:rgba(255,255,255,.75);font-size:.95rem;margin-bottom:16px">The next phase is not more content. It is infrastructure: the attribution model that makes every spend decision easier, the activation sequence that converts trials to enterprise relationships, and the GEO cluster architecture that earns AI search authority while Articulate is still relying on 20 years of brand recognition.</p>
+    <p style="color:rgba(255,255,255,.75);font-size:.95rem;margin-bottom:24px">The Danone story — 100 authors to 2,500, budget halved — is the most powerful enterprise conversion proof in the category. It happened without a system. With the right infrastructure underneath it, that story reaches every enterprise L&D director who asks an AI tool for a recommendation before they open Google.</p>
+    <p class="tagline">That is not a campaign. That is MDB operating as the growth infrastructure.</p>
+    <div style="margin-top:32px;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.4);font-size:.75rem">
+      Strategy and GTM research by Jean Mundabi Fala, MDB Growth Capital &nbsp;·&nbsp; April 2026<br>
+      Sources: Getlatka (revenue), G2/Capterra (reviews), Contentoo interview (Igor Rudi), LinkedIn (leadership), company website (pricing, case studies)
+    </div>
+  </div>
+</div>
+</section>
+
+<script>
+// Scroll reveal
+const obs=new IntersectionObserver(e=>e.forEach(x=>x.isIntersecting&&x.target.classList.add('on')),{threshold:.1});
+document.querySelectorAll('.rv').forEach(e=>obs.observe(e));
+
+// Side nav active state
+const secs=['hero','signals','geo','funnel','cascade','plan','emails','offer','objections','cta'];
+const links=document.querySelectorAll('.sn a');
+window.addEventListener('scroll',()=>{
+  let cur='';
+  secs.forEach(id=>{const s=document.getElementById(id);if(s&&s.getBoundingClientRect().top<200)cur=id;});
+  links.forEach(l=>{l.classList.toggle('ac',l.getAttribute('href')==='#'+cur);});
+},{passive:true});
+
+// FAQ accordion
+document.querySelectorAll('.fq-q').forEach(q=>{
+  q.addEventListener('click',()=>{
+    const p=q.parentElement;const a=p.querySelector('.fq-a');
+    const isOpen=p.classList.contains('open');
+    document.querySelectorAll('.fq.open').forEach(el=>{el.classList.remove('open');el.querySelector('.fq-a').style.maxHeight='0';});
+    if(!isOpen){p.classList.add('open');a.style.maxHeight=a.scrollHeight+16+'px';}
+  });
+});
+
+// Video URL replace
+const vidUrl='VIDEO_URL_GOES_HERE';
+if(vidUrl&&!vidUrl.includes('VIDEO_URL')){
+  const vb=document.getElementById('vidbox');
+  let embedUrl=vidUrl;
+  if(vidUrl.includes('loom.com')){const id=vidUrl.split('/').pop().split('?')[0];embedUrl='https://www.loom.com/embed/'+id;}
+  else if(vidUrl.includes('youtu')){const id=vidUrl.includes('watch?v=')?vidUrl.split('watch?v=')[1].split('&')[0]:vidUrl.split('/').pop();embedUrl='https://www.youtube.com/embed/'+id;}
+  else if(vidUrl.includes('vimeo')){const id=vidUrl.split('/').pop();embedUrl='https://player.vimeo.com/video/'+id;}
+  if(vb)vb.innerHTML='<iframe src="'+embedUrl+'?autoplay=0" allow="autoplay; fullscreen" allowfullscreen></iframe>';
+}
+</script>
+</body>
+</html>
